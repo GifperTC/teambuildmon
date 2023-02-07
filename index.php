@@ -2,27 +2,62 @@
 session_start();
 include("inc_connect.php");
 
-//เข้าสู่ระบบ
-if ( isset($_POST['submit']) ) {
+//Sign up
+if (isset($_POST['signup_submit'])) {
+    // && isset($_POST['username']) && isset($_POST['password']
+    if (
+        isset($_POST['email'], $_POST['username'], $_POST['password'], $_POST['cpassword'])
+        && strlen($_POST['email']) && strlen($_POST['username']) && strlen($_POST['password']) && strlen($_POST['cpassword'])
+    ) {
+
+        $email = mysqli_real_escape_string($conn, $_POST['email']);
+        $username = mysqli_real_escape_string($conn, $_POST['username']);
+        $password = mysqli_real_escape_string($conn, $_POST['password']);
+        $cpassword = mysqli_real_escape_string($conn, $_POST['cpassword']);
+
+        if ($password == $cpassword) {   // Confirm password correct
+
+            $password = sha1($password); //เข้ารหัสด้วย sha1()
+            echo "<script> alert('Sign in successful!'); </script>";
+
+            $sql = "Insert Into member ( mem_username, mem_email, mem_password) 
+                values ( '$username', '$email', '$password')";
+
+            mysqli_query($conn, $sql);
+        } else { // Confirm password wrong
+            echo "<script> alert('Please enter the same password'); </script>";
+        }
+    } else { // Empty fields
+        echo "<script> alert('Please fill in every field'); </script>";
+    }
+
+    header("refresh:1; url=?page=team");
+    exit();
+}
+
+//Login
+if (isset($_POST['login_submit'])) {
     $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password = sha1(mysqli_real_escape_string($conn, $_POST['password'])); //เข้ารหัสด้วย sha1()
 
     $sql = " Select * From member Where mem_username = '$username' And mem_password = '$password' ";
     $rst = mysqli_query($conn, $sql);
     $arr = mysqli_fetch_array($rst);
-    if ( isset($arr['mem_id']) ) {   //กรณีรหัสถูกต้อง
+    if (isset($arr['mem_id'])) {   //กรณีรหัสถูกต้อง
         $_SESSION['login_id']       = $arr['mem_id'];     //เก็บข้อมูลผู้เข้าระบบใส่ตัวแปร
         $_SESSION['login_username'] = $arr['mem_username'];
         $_SESSION['login_email']    = $arr['mem_email'];
     } else {
-        echo "<script> alert('กรุณาตรวจสอบรหัสผ่านอีกครั้ง'); </script>";
+        echo "<script> alert('Incorrect password!'); </script>";
     }
-    header("refresh:2; url=?page=team");
+    header("refresh:1; url=?page=team");
     exit();
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,6 +68,7 @@ if ( isset($_POST['submit']) ) {
     <script src="js/jquery-3.6.3.min.js"></script>
     <script src="js/bootstrap.bundle.js"></script>
 </head>
+
 <body>
 
     <form action="" method="post">
@@ -51,7 +87,10 @@ if ( isset($_POST['submit']) ) {
                         <input type="password" name="password" id="password" placeholder="Password" class="form-control form-control-sm mt-2 mb-3">
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" name="submit" class="btn btn-primary btn-sm">Login</button>
+                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#ModalSignup"> Signup </button>
+
+                        <button type="submit" name="login_submit" class="btn btn-primary btn-sm">Login</button>
+
                     </div>
                 </div>
             </div>
@@ -69,13 +108,19 @@ if ( isset($_POST['submit']) ) {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        Email
+                        <input type="text" name="email" id="email" placeholder="Email" class="form-control form-control-sm mt-2 mb-3">
                         Username
                         <input type="text" name="username" id="username" placeholder="Username" class="form-control form-control-sm mt-2 mb-3">
                         Password
                         <input type="password" name="password" id="password" placeholder="Password" class="form-control form-control-sm mt-2 mb-3">
+                        Confirm Password
+                        <input type="password" name="cpassword" id="cpassword" placeholder="Confirm Password" class="form-control form-control-sm mt-2 mb-3">
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" name="submit" class="btn btn-primary btn-sm">Sign up</button>
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target='#ModalLogin'>Back to Login</button>
+                        <button type="submit" name="signup_submit" class="btn btn-warning btn-sm">Sign up</button>
+
                     </div>
                 </div>
             </div>
@@ -87,7 +132,7 @@ if ( isset($_POST['submit']) ) {
         <div id="headtopic" class=""> TeamBuildmon </div>
     </header>
 
-    
+
     <nav class="navbar navbar-expand-sm m-0 p-1 text-white">
         <div class="container-fluid">
             <img src="images/logo1.png" id="logo">
@@ -100,8 +145,8 @@ if ( isset($_POST['submit']) ) {
                     <li class="nav-item"><a class="nav-link text-white" href="?page=team">Team Planner</a></li>
                 </ul>
                 <div>
-                    <?php 
-                    if ( isset($_SESSION['login_username']) ) {
+                    <?php
+                    if (isset($_SESSION['login_username'])) {
                         echo $_SESSION['login_username'];
                         echo "<a href='logout.php' class='ms-2 text-white' title='Logout'>[Logout]</a>";
                     } else {
@@ -132,5 +177,6 @@ if ( isset($_POST['submit']) ) {
     </footer>
 
 </body>
+
 </html>
 <?php mysqli_close($conn); ?>

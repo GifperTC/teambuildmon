@@ -45,9 +45,9 @@ $speed      = $arr['speed'];
                 <h5 class="fw-bold mt-3">Data</h5>
                 <div class="row">
                     <div class="col-xl-5 col-md-4 col-3">National No:</div>
-                    <div class="col-xl-7 col-md-8 col-9"><?php echo $arr['pokedex_number']; ?></div>
+                    <div class="col-xl-7 col-md-8 col-9"><?php echo $arr['dex_no']; ?></div>
                     <div class="col-xl-5 col-md-4 col-3">JP Name:</div>
-                    <div class="col-xl-7 col-md-8 col-9"><?php echo $arr['japanese_name']; ?></div>
+                    <div class="col-xl-7 col-md-8 col-9"><?php echo $arr['jp_name']; ?></div>
                     <div class="col-xl-5 col-md-4 col-3">Type:</div>
                     <div class="col-xl-7 col-md-8 col-9">
                         <img src="images/type_icon/<?php echo $arr['type1'] ?>.png" title="<?php echo ucfirst($arr['type1']) ?>">
@@ -61,7 +61,7 @@ $speed      = $arr['speed'];
                     <div class="col-xl-5 col-md-4 col-3">Catch rate:</div>
                     <div class="col-xl-7 col-md-8 col-9"><?php echo $arr['capture_rate']; ?></div>
                     <div class="col-xl-5 col-md-4 col-3">Exp growth:</div>
-                    <div class="col-xl-7 col-md-8 col-9"><?php echo $arr['experience_growth']; ?></div>
+                    <div class="col-xl-7 col-md-8 col-9"><?php echo $arr['exp_growth']; ?></div>
                 </div>
             </div>
         </div>

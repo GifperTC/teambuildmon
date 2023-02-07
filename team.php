@@ -2,13 +2,13 @@
 function ResetSession() {
     unset($_SESSION['mon_id']);
     unset($_SESSION['name']);
-    unset($_SESSION['japanese_name']);
+    unset($_SESSION['jp_name']);
     unset($_SESSION['img']);
     unset($_SESSION['type1']);
     unset($_SESSION['type2']);
     unset($_SESSION['base_egg_steps']);
     unset($_SESSION['capture_rate']);
-    unset($_SESSION['experience_growth']);
+    unset($_SESSION['exp_growth']);
     unset($_SESSION['hp']);
     unset($_SESSION['attack']);
     unset($_SESSION['defense']);
@@ -20,13 +20,13 @@ function ResetSession() {
 function CreateSession() {
     $_SESSION['mon_id'] = array();
     $_SESSION['name'] = array();
-    $_SESSION['japanese_name'] = array();
+    $_SESSION['jp_name'] = array();
     $_SESSION['img'] = array();
     $_SESSION['type1'] = array();
     $_SESSION['type2'] = array();
     $_SESSION['base_egg_steps'] = array();
     $_SESSION['capture_rate'] = array();
-    $_SESSION['experience_growth'] = array();
+    $_SESSION['exp_growth'] = array();
     $_SESSION['hp'] = array();
     $_SESSION['attack'] = array();
     $_SESSION['defense'] = array();
@@ -42,13 +42,13 @@ function GetMonster($mon_id) {
     $arrm = mysqli_fetch_array($rstm);
     array_push($_SESSION['mon_id'],$arrm['mon_id']); 
     array_push($_SESSION['name'],$arrm['name']); 
-    array_push($_SESSION['japanese_name'],$arrm['japanese_name']); 
+    array_push($_SESSION['jp_name'],$arrm['jp_name']); 
     array_push($_SESSION['img'],$arrm['img']); 
     array_push($_SESSION['type1'],$arrm['type1']); 
     array_push($_SESSION['type2'],$arrm['type2']); 
     array_push($_SESSION['base_egg_steps'],$arrm['base_egg_steps']); 
     array_push($_SESSION['capture_rate'],$arrm['capture_rate']); 
-    array_push($_SESSION['experience_growth'],$arrm['experience_growth']); 
+    array_push($_SESSION['exp_growth'],$arrm['exp_growth']); 
     
     array_push($_SESSION['hp'],$arrm['hp']); 
     array_push($_SESSION['attack'],$arrm['attack']); 
@@ -146,13 +146,13 @@ if ( isset($_GET['type']) And trim($_GET['type']) == "remove" and isset($_GET['m
     if (($key = array_search($_GET['mon_id'], $_SESSION['mon_id'])) !== false) {
         unset($_SESSION['mon_id'][$key]);
         unset($_SESSION['name'][$key]);
-        unset($_SESSION['japanese_name'][$key]);
+        unset($_SESSION['jp_name'][$key]);
         unset($_SESSION['img'][$key]);
         unset($_SESSION['type1'][$key]);
         unset($_SESSION['type2'][$key]);
         unset($_SESSION['base_egg_steps'][$key]);
         unset($_SESSION['capture_rate'][$key]);
-        unset($_SESSION['experience_growth'][$key]);
+        unset($_SESSION['exp_growth'][$key]);
         unset($_SESSION['hp'][$key]);
         unset($_SESSION['attack'][$key]);
         unset($_SESSION['defense'][$key]);
@@ -161,13 +161,13 @@ if ( isset($_GET['type']) And trim($_GET['type']) == "remove" and isset($_GET['m
         unset($_SESSION['speed'][$key]);
         $_SESSION['mon_id']         = array_values($_SESSION['mon_id']);  //เรียงลำดับใหม่ เริ่มต้นจาก index 0
         $_SESSION['name']           = array_values($_SESSION['name']);
-        $_SESSION['japanese_name']  = array_values($_SESSION['japanese_name']);
+        $_SESSION['jp_name']  = array_values($_SESSION['jp_name']);
         $_SESSION['img']            = array_values($_SESSION['img']);
         $_SESSION['type1']          = array_values($_SESSION['type1']);
         $_SESSION['type2']          = array_values($_SESSION['type2']);
         $_SESSION['base_egg_steps'] = array_values($_SESSION['base_egg_steps']);
         $_SESSION['capture_rate']   = array_values($_SESSION['capture_rate']);
-        $_SESSION['experience_growth']  = array_values($_SESSION['experience_growth']);
+        $_SESSION['exp_growth']  = array_values($_SESSION['exp_growth']);
         $_SESSION['hp']             = array_values($_SESSION['hp']);
         $_SESSION['attack']         = array_values($_SESSION['attack']);
         $_SESSION['defense']        = array_values($_SESSION['defense']);
@@ -182,7 +182,7 @@ if ( isset($_GET['type']) And trim($_GET['type']) == "remove" and isset($_GET['m
 //เลือก Monster เพิ่ม
 if ( isset($_GET['mon_id']) And trim($_GET['mon_id']) != "" ) {
     if (in_array($_GET['mon_id'],$_SESSION['mon_id']) ) {
-        echo "<script> alert('คุณเลือกรายการซ้ำ!');</script>";
+        echo "<script> alert('You already pick this pokemon!');</script>";
     } else {
         GetMonster($_GET['mon_id']);
     }
@@ -211,7 +211,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
     <h3 class="text-center pt-4 pb-3">Team Planner</h3>
 
     <h4 class="text-primary fw-bold ms-2"> Game: </h4>
-    <a href="?page=team&g=0" class="ms-4 small" title="เปลี่ยนเกมส์">[change]</a>
+    <a href="?page=team&g=0" class="ms-4 small" title="Select game">[change]</a>
 
     <div class="row">
         <div class="col-lg-2 col-md-4 col-sm-6">
@@ -286,7 +286,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ModalList"> Back </button>
-                    <button type="button" id="btnAddMon" class="btn btn-primary"> Add Monster </button>
+                    <button type="button" id="btnAddMon" class="btn btn-primary"> Add Pokemon </button>
                 </div>
                 </div>
             </div>
@@ -307,7 +307,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" id="btnRemoveMon" class="btn btn-outline-danger"> Remove Monster </button>
+                    <button type="button" id="btnRemoveMon" class="btn btn-outline-danger"> Remove Pokemon </button>
                 </div>
                 </div>
             </div>
@@ -324,9 +324,9 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                     <div class="modal-body">
                         <?php
                         if ( !isset($_SESSION['login_username']) ) {
-                            echo "<h5> กรุณาเข้าสู่ระบบก่อน ! </h5>";
+                            echo "<h5> Please login first ! </h5>";
                         } elseif ($num_mon == 0) {
-                            echo "<h5> กรุณาเลือก Monster อย่างน้อย 1 รายการ ! </h5>";
+                            echo "<h5> Select at least 1 pokemon ! </h5>";
                         } else {
                             echo "<h5> Save Team to <br> <b>".$_SESSION['game_name']."</b> ? </h5>";
                         }
@@ -335,7 +335,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                     <div class="modal-footer">
                         <?php 
                         if ( !isset($_SESSION['login_username']) ) { 
-                            echo "<button class='btn btn-primary btn-sm' data-bs-toggle='modal' data-bs-target='#ModalLogin'>เข้าสู่ระบบ</button> &nbsp;";
+                            echo "<button class='btn btn-primary btn-sm' data-bs-toggle='modal' data-bs-target='#ModalLogin'>Login</button> &nbsp;";
                         } elseif ($num_mon == 0) { 
                             echo '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>';
                         } else { ?>
@@ -362,7 +362,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                     if ( isset($_SESSION['login_username']) ) {
                         echo "<h5> Load Team of <br> <b>".$_SESSION['game_name']."</b> ? </h5>";
                     } else {
-                        echo "<h5> กรุณาเข้าสู่ระบบก่อน ! </h5>";
+                        echo "<h5> Please login first ! </h5>";
                     }
                     ?>
                 </div>
@@ -371,7 +371,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                         <button type="button" id="btnLoad" class="btn btn-success"> OK </button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <?php  } else { 
-                        echo "<button class='btn btn-primary btn-sm' data-bs-toggle='modal' data-bs-target='#ModalLogin'>เข้าสู่ระบบ</button> &nbsp;";
+                        echo "<button class='btn btn-primary btn-sm' data-bs-toggle='modal' data-bs-target='#ModalLogin'>Login</button> &nbsp;";
                       }  ?>
                 </div>
                 </div>
@@ -380,7 +380,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
         <!-- Load Team modal end-->
 
 
-        <h4 class="text-primary fw-bold ms-2"> Selected Monsters: </h4>
+        <h4 class="text-primary fw-bold ms-2"> Your Pokemon Team: </h4>
 
         <?php  //if ($num_mon == 0) { echo "<h3 class='text-center'>ยังไม่มีรายการ</h3>"; } ?>
 
@@ -406,12 +406,12 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                 </tr>
                 <tr class="text-center align-middle small">
                     <td class="fw-bold"> JP Name </td>
-                    <td> <?php echo isset($_SESSION['japanese_name'][0]) ? $_SESSION['japanese_name'][0] : "-"; ?> </td>
-                    <td> <?php echo isset($_SESSION['japanese_name'][1]) ? $_SESSION['japanese_name'][1] : "-"; ?> </td>
-                    <td> <?php echo isset($_SESSION['japanese_name'][2]) ? $_SESSION['japanese_name'][2] : "-"; ?> </td>
-                    <td> <?php echo isset($_SESSION['japanese_name'][3]) ? $_SESSION['japanese_name'][3] : "-"; ?> </td>
-                    <td> <?php echo isset($_SESSION['japanese_name'][4]) ? $_SESSION['japanese_name'][4] : "-"; ?> </td>
-                    <td> <?php echo isset($_SESSION['japanese_name'][5]) ? $_SESSION['japanese_name'][5] : "-"; ?> </td>
+                    <td> <?php echo isset($_SESSION['jp_name'][0]) ? $_SESSION['jp_name'][0] : "-"; ?> </td>
+                    <td> <?php echo isset($_SESSION['jp_name'][1]) ? $_SESSION['jp_name'][1] : "-"; ?> </td>
+                    <td> <?php echo isset($_SESSION['jp_name'][2]) ? $_SESSION['jp_name'][2] : "-"; ?> </td>
+                    <td> <?php echo isset($_SESSION['jp_name'][3]) ? $_SESSION['jp_name'][3] : "-"; ?> </td>
+                    <td> <?php echo isset($_SESSION['jp_name'][4]) ? $_SESSION['jp_name'][4] : "-"; ?> </td>
+                    <td> <?php echo isset($_SESSION['jp_name'][5]) ? $_SESSION['jp_name'][5] : "-"; ?> </td>
                 </tr>
                 <tr class="text-center align-middle small">
                     <td class="fw-bold"> Type 1 </td>
@@ -433,7 +433,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                     <td> <?php echo isset($_SESSION['type2'][5]) && $_SESSION['type2'][5]!="" ? "<img src='images/type_icon/".$_SESSION['type2'][5].".png'>" : "-"; ?> </td>
                 </tr>
                 <tr class="text-center align-middle small">
-                    <td class="fw-bold"> BES </td>
+                    <td class="fw-bold"> Egg steps </td>
                     <td> <?php echo isset($_SESSION['base_egg_steps'][0]) ? $_SESSION['base_egg_steps'][0] : "-"; ?> </td>
                     <td> <?php echo isset($_SESSION['base_egg_steps'][1]) ? $_SESSION['base_egg_steps'][1] : "-"; ?> </td>
                     <td> <?php echo isset($_SESSION['base_egg_steps'][2]) ? $_SESSION['base_egg_steps'][2] : "-"; ?> </td>
@@ -452,12 +452,12 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                 </tr>
                 <tr class="text-center align-middle small">
                     <td class="fw-bold"> Exp growth </td>
-                    <td> <?php echo isset($_SESSION['experience_growth'][0]) ? $_SESSION['experience_growth'][0] : "-"; ?> </td>
-                    <td> <?php echo isset($_SESSION['experience_growth'][1]) ? $_SESSION['experience_growth'][1] : "-"; ?> </td>
-                    <td> <?php echo isset($_SESSION['experience_growth'][2]) ? $_SESSION['experience_growth'][2] : "-"; ?> </td>
-                    <td> <?php echo isset($_SESSION['experience_growth'][3]) ? $_SESSION['experience_growth'][3] : "-"; ?> </td>
-                    <td> <?php echo isset($_SESSION['experience_growth'][4]) ? $_SESSION['experience_growth'][4] : "-"; ?> </td>
-                    <td> <?php echo isset($_SESSION['experience_growth'][5]) ? $_SESSION['experience_growth'][5] : "-"; ?> </td>
+                    <td> <?php echo isset($_SESSION['exp_growth'][0]) ? $_SESSION['exp_growth'][0] : "-"; ?> </td>
+                    <td> <?php echo isset($_SESSION['exp_growth'][1]) ? $_SESSION['exp_growth'][1] : "-"; ?> </td>
+                    <td> <?php echo isset($_SESSION['exp_growth'][2]) ? $_SESSION['exp_growth'][2] : "-"; ?> </td>
+                    <td> <?php echo isset($_SESSION['exp_growth'][3]) ? $_SESSION['exp_growth'][3] : "-"; ?> </td>
+                    <td> <?php echo isset($_SESSION['exp_growth'][4]) ? $_SESSION['exp_growth'][4] : "-"; ?> </td>
+                    <td> <?php echo isset($_SESSION['exp_growth'][5]) ? $_SESSION['exp_growth'][5] : "-"; ?> </td>
                 </tr>
             </table>
         </div>
@@ -475,7 +475,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
 
 
         <!-- "Best Stats" start-->
-        <?php if ($num_mon >= 2) { ?>
+        <!-- <?php if ($num_mon >= 2) { ?>
 
             <h4 class="text-primary fw-bold ms-2 mt-4"> Best Stats: </h4>
 
@@ -513,12 +513,12 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                 </div>
             </div>
 
-        <?php } ?>
+        <?php } ?> -->
         <!-- "Best Stats" end -->
 
 
-
-        <h4 class="text-primary fw-bold ms-2 mt-4"> Monsters Data: </h4>
+        <!-- Team Stats -->
+        <h4 class="text-primary fw-bold ms-2 mt-4"> Team Stats: </h4>
 
         <div class="m-2 px-2 pt-1 pb-3">
             <div class="row">
@@ -595,8 +595,8 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
         </div>
 
 
-
-        <h4 class="text-primary fw-bold ms-2 mt-4"> Stats: </h4>
+        <!-- Stats comparison graph -->
+        <h4 class="text-primary fw-bold ms-2 mt-4"> Stats Comparison: </h4>
 
         <div class="m-2">
             <div class="row">
@@ -638,8 +638,8 @@ if ($num_mon != 0) {
         var options = {
             legend: { position: 'bottom' },
             chart: {
-                title: 'Monsters Comparison',
-                subtitle: '...',
+                // title: 'Monsters Comparison',
+                // subtitle: '...',
             }
         };
         var chart = new google.charts.Bar(document.getElementById('columnchart_stat'));
@@ -661,7 +661,7 @@ $(document).ready(function(){
                 $("#showmon").html(data)
             }
         ).fail(function(){
-            $("#showmon").html("เรียกไฟล์ไม่สำเร็จ")
+            $("#showmon").html("Can't get file")
         })
     })
 
@@ -673,7 +673,7 @@ $(document).ready(function(){
                 $("#detailmon").html(data)
             }
         ).fail(function(){
-            $("#detailmon").html("เรียกไฟล์ไม่สำเร็จ")
+            $("#detailmon").html("Can't get file")
         })
     })
 
