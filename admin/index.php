@@ -20,7 +20,7 @@ include("../inc_connect.php");
             <span class="logo_name">TeamBuildmon</span>
         </div>
         <ul class="nav-links">
-            <li>
+            <!-- <li>
                 <a href="?page=dashboard">
                     <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
                     <span class="link_name">Dashboard</span>
@@ -28,14 +28,14 @@ include("../inc_connect.php");
                 <ul class="sub-menu blank">
                     <li><a class="link_name" href="?page=dashboard">Dashboard</a></li>
                 </ul>
-            </li>
+            </li> -->
             <li>
                 <a href="?page=monsters">
                     <i class="fa fa-list"></i>
-                    <span class="link_name">Monsters</span>
+                    <span class="link_name">Pokemon list</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name" href="?page=monsters">Monsters</a></li>
+                    <li><a class="link_name" href="?page=monsters">Pokemon list</a></li>
                 </ul>
             </li>
             <li>
@@ -121,6 +121,9 @@ include("../inc_connect.php");
         });
     </script>
 
+    <footer>
+        All Pokémon images & names &copy; 1995-2023 Nintendo/Game Freak. Pokémon images & names &copy; 1995-2023 Nintendo/Game Freak.
+    </footer>
 
 </body>
 

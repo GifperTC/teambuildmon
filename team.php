@@ -123,9 +123,10 @@ if ( isset($_GET['type']) And trim($_GET['type']) == "load" And isset($_SESSION[
 }
 
 //Reset team
-if ( isset($_GET['type']) And trim($_GET['type']) == "reset" And isset($_SESSION['login_id']) ) {
+if ( isset($_GET['type']) And trim($_GET['type']) == "reset") {
     ResetSession();
     CreateSession();
+    echo "<script> window.location='index.php?page=team'; </script>";
 }
 
 //Select Game

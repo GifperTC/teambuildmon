@@ -161,7 +161,7 @@ if (isset($_POST['login_submit'])) {
     <!-- White content box-->
     <section>
         <div class="container-md">
-            <div class="bg-white border rounded mt-3 mb-3 p-2"> <!--  style="min-height: 600px; overflow-y: auto; overflow-x: hidden;" -->
+            <div class="bg-white border rounded mt-3 mb-3 p-2" style="min-height: 450px;">  <!--  style="min-height: 600px; overflow-y: auto; overflow-x: hidden;" -->
                 <?php
                 $page = "home.php";
                 if (isset($_GET['page']))
@@ -173,7 +173,7 @@ if (isset($_POST['login_submit'])) {
     </section>
 
     <footer>
-        All content & design &copy; Pokémon Database, 2008-2023. Pokémon images & names &copy; 1995-2023 Nintendo/Game Freak.
+        All Pokémon images & names &copy; 1995-2023 Nintendo/Game Freak.
     </footer>
 
 </body>

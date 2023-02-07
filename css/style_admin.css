@@ -9,6 +9,20 @@ body {
     font-family: 'Noto Sans Thai', 'K2D', 'IBM Plex Sans Thai';
 }
 
+footer {
+  width: 100%;
+  min-height: 50px;
+  background-color: #585858;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  color: #CCCCCC;
+
+  /* position: fixed; */
+  bottom: 0;
+  }
+
 
 #logo {
     margin-left:10px;
