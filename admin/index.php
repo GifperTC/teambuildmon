@@ -76,7 +76,7 @@ include("../inc_connect.php");
 
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="?page=dashboard"><img src="../images/logo1.png" id="logo"></a>
+                <a class="navbar-brand" href="?page=monsters"><img src="../images/logo1.png" id="logo"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -84,17 +84,17 @@ include("../inc_connect.php");
                     <ul class="navbar-nav me-auto">
                         <span class="navbar-text">&nbsp;</span>
                     </ul>
-                    <span class="navbar-text"> สมรักษ์ คำสิงห์ &nbsp;[Admin]</span>
+                    <span class="navbar-text"> Username &nbsp;[Admin]</span>
                 </div>
             </div>
         </nav>
 
         <div class="home-content">
 
-            <div class="container-fluid">
+            <div class="container-fluid" style="min-height: 603px;">
                 <?php 
                 
-                $page = "dashboard.php";
+                $page = "monsters.php";
                 if (isset($_GET['page']))
                     $page = $_GET['page'].".php";
                 include($page);
