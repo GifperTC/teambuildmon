@@ -1,4 +1,11 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['login_id']) or $_SESSION['login_role'] != "admin") {
+   header("refresh:1; url=login.php");
+   exit();
+}
+
 include("../inc_connect.php");
 ?>
 <!DOCTYPE html>
@@ -9,6 +16,7 @@ include("../inc_connect.php");
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href="../css/style_admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="../js/jquery-3.6.3.min.js"></script>
     <script src="../js/bootstrap.bundle.js"></script>
 </head>
 <body>
@@ -66,7 +74,7 @@ include("../inc_connect.php");
 
             <li>
                 <div class="profile-details">
-                    <a href="signout.php" title="Sign out"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+                    <a href="logout.php" title="Log out"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
                 </div>
             </li>
         </ul>
@@ -84,7 +92,7 @@ include("../inc_connect.php");
                     <ul class="navbar-nav me-auto">
                         <span class="navbar-text">&nbsp;</span>
                     </ul>
-                    <span class="navbar-text"> Username &nbsp;[Admin]</span>
+                    <span class="navbar-text"> <?php echo $_SESSION['login_username'] ?> &nbsp; [<?php echo $_SESSION['login_role'] ?>]</span>
                 </div>
             </div>
         </nav>

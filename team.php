@@ -49,7 +49,6 @@ function GetMonster($mon_id) {
     array_push($_SESSION['base_egg_steps'],$arrm['base_egg_steps']); 
     array_push($_SESSION['capture_rate'],$arrm['capture_rate']); 
     array_push($_SESSION['exp_growth'],$arrm['exp_growth']); 
-    
     array_push($_SESSION['hp'],$arrm['hp']); 
     array_push($_SESSION['attack'],$arrm['attack']); 
     array_push($_SESSION['defense'],$arrm['defense']); 
@@ -72,11 +71,25 @@ function showbarcolor($num) {
     }
 }
 
+function showExpGrowth($num){
+    if ($num >= 1640000) {
+        echo "Fluctuating";
+    } else if ($num >= 1250000) {
+        echo "Slow";
+    } else if ($num >= 1059860) {
+        echo "Medium Slow";
+    } else if ($num >= 1000000) {
+        echo "Medium Fast";
+    } else if ($num >= 800000) {
+        echo "Fast";
+    } else {
+        echo "Erratic";
+    }
+}
+
 if ( !isset($_SESSION['game_id'])) { $_SESSION['game_id'] = 0; }
 
-if ( !isset($_SESSION['mon_id'])) {
-    CreateSession();
-}
+if ( !isset($_SESSION['mon_id'])) { CreateSession(); }
 
 //Save team
 if ( isset($_GET['type']) And trim($_GET['type']) == "save" And isset($_SESSION['login_id']) ) {
@@ -211,11 +224,10 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
 
     <h3 class="text-center pt-4 pb-3">Team Planner</h3>
 
-    <h4 class="text-primary fw-bold ms-2"> Game: </h4>
-    <a href="?page=team&g=0" class="ms-4 small" title="Select game">[change]</a>
-
     <div class="row">
         <div class="col-lg-2 col-md-4 col-sm-6">
+            <h4 class="text-primary fw-bold ms-1"> Game: </h4>
+            <a href="?page=team&g=0" class="ms-4 small" title="Select game" onclick="if(!confirm('Change Game ? (Reset your monsters!)'))return false;">[change]</a>
         </div>
         <?php
         $sqlg = " Select * From game ";
@@ -225,10 +237,26 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
         while ($arrg = mysqli_fetch_array($rstg)) 
         {
             ?>
-            <div class="col-lg-2 col-md-4 col-sm-6  d-flex">
-                <div class="p-3 text-center align-items-center">
-                    <a href="?page=team&g=<?php echo $arrg['game_short']?>"><img src="images/<?php echo $arrg['game_img']?>" class="img-fluid" title="<?php echo $arrg['game_name']?>"></a>
+            <div class="col-lg-2 col-md-4 col-sm-6 d-flex"> 
+                <div class="p-3 text-center align-items-center"> 
+
+                    <?php 
+                        if ( isset($_SESSION['login_id']) ) {
+                            $sqltg = " Select * From team Where mem_id='".$_SESSION['login_id']."' And game_short = '".$arrg['game_short']."'"; 
+                            $rsttg = mysqli_query($conn, $sqltg);
+                            $rowtg = mysqli_num_rows($rsttg);
+                            if($rowtg > 0) echo "<div class='pt-1 pb-4 fw-bold small text-success'>Team Available <i class=\"fa-solid fa-circle-check\"></i></div>"; else echo "<div class='py-3'>&nbsp;</div>";
+                        }
+                    ?>
+
+                    <?php if ($_SESSION['game_id'] != 0) { ?>
+                        <img src="images/<?php echo $arrg['game_img']?>" class="img-fluid" title="<?php echo $arrg['game_name']?>">
+                    <?php } else { ?>
+                        <a href="?page=team&g=<?php echo $arrg['game_short']?>"><img src="images/<?php echo $arrg['game_img']?>" class="img-fluid" title="<?php echo $arrg['game_name']?>"></a>
+                    <?php } ?>
+                        
                     <?php if ($_SESSION['game_id'] != 0 and $_SESSION['game_name']==$arrg['game_name']) echo "<div class='small pt-3 fw-bold'>".$_SESSION['game_name']."</div>";?>
+                    
                 </div>
             </div>
             <?php 
@@ -251,14 +279,37 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                 </div>
                 <div class="modal-body">
                     <div class="row">
+                        <div class="col-xl-6 col-lg-10 col-12">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <input type="text" id="txtsearch" class="form-control form-control-sm form-inline" placeholder="Search Monster....">
+                                </div>
+                                <div class="col-sm-5">
+                                    <select class="form-select form-select-sm" name="seltype" id="seltype">
+                                        <option value="">--All Type--</option>
+                                        <?php   
+                                            $rsttype = mysqli_query($conn, " Select * From type Order By type_name Asc ");
+                                            while ($arrtype = mysqli_fetch_array($rsttype)) {
+                                                    echo "<option value='".strtolower($arrtype['type_name'])."'> ".$arrtype['type_name']."</option>";
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="col-sm-1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-2 col-12"></div>
                         <?php
-                        $sql = " Select * From mon_data Where ".$_SESSION['game_id']." = 'Y' Order By mon_id Asc ";
+                        $sql = " Select * From mon_data Where ".$_SESSION['game_id']." = 'Y' Order By name Asc ";
                         $rst = mysqli_query($conn, $sql);
                         while ($arr = mysqli_fetch_array($rst))
                         {
                             ?>
-                            <div class="col-lg-1 col-md-2 col-sm-3 col-4">
+                            <div class="mondiv col-xl-1 col-lg-2 col-md-2 col-sm-3 col-4 p-0">
                                 <a data-bs-toggle="modal" data-id="<?php echo $arr['mon_id'];?>" class="monster" data-bs-target="#ModalDetail"><img src="images_mon/<?php echo $arr['img'];?>" class="slot img-fluid rounded-circle"></a>
+                                <div class="small text-center"><?php echo $arr['name'];?></div>
+                                <div style="display:none;"><?php echo $arr['type1'];?> <?php echo $arr['type2'];?></div>
                             </div>
                             <?php
                         }
@@ -453,12 +504,12 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                 </tr>
                 <tr class="text-center align-middle small">
                     <td class="fw-bold"> Exp growth </td>
-                    <td> <?php echo isset($_SESSION['exp_growth'][0]) ? $_SESSION['exp_growth'][0] : "-"; ?> </td>
-                    <td> <?php echo isset($_SESSION['exp_growth'][1]) ? $_SESSION['exp_growth'][1] : "-"; ?> </td>
-                    <td> <?php echo isset($_SESSION['exp_growth'][2]) ? $_SESSION['exp_growth'][2] : "-"; ?> </td>
-                    <td> <?php echo isset($_SESSION['exp_growth'][3]) ? $_SESSION['exp_growth'][3] : "-"; ?> </td>
-                    <td> <?php echo isset($_SESSION['exp_growth'][4]) ? $_SESSION['exp_growth'][4] : "-"; ?> </td>
-                    <td> <?php echo isset($_SESSION['exp_growth'][5]) ? $_SESSION['exp_growth'][5] : "-"; ?> </td>
+                    <td> <?php echo isset($_SESSION['exp_growth'][0]) ? showExpGrowth($_SESSION['exp_growth'][0]) : "-"; ?> </td>
+                    <td> <?php echo isset($_SESSION['exp_growth'][1]) ? showExpGrowth($_SESSION['exp_growth'][1]) : "-"; ?> </td>
+                    <td> <?php echo isset($_SESSION['exp_growth'][2]) ? showExpGrowth($_SESSION['exp_growth'][2]) : "-"; ?> </td>
+                    <td> <?php echo isset($_SESSION['exp_growth'][3]) ? showExpGrowth($_SESSION['exp_growth'][3]) : "-"; ?> </td>
+                    <td> <?php echo isset($_SESSION['exp_growth'][4]) ? showExpGrowth($_SESSION['exp_growth'][4]) : "-"; ?> </td>
+                    <td> <?php echo isset($_SESSION['exp_growth'][5]) ? showExpGrowth($_SESSION['exp_growth'][5]) : "-"; ?> </td>
                 </tr>
             </table>
         </div>
@@ -476,46 +527,86 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
 
 
         <!-- "Best Stats" start-->
-        <!-- <?php if ($num_mon >= 2) { ?>
+        </h4> <a id="stat"></a>
+        <h4 class="text-primary fw-bold ms-2 mt-5"> Best Stats: 
+        <div class="row">
+            <div class="col-lg-3 col-md-1"></div>
+            <div class="col-lg-6 col-md-10">
+                
+                <?php if ($num_mon >= 2) { ?>
 
-            <h4 class="text-primary fw-bold ms-2 mt-4"> Best Stats: </h4>
+                    <?php
+                    $strin = "";
+                    if (isset($_SESSION['mon_id'][0])) $strin .= "( ".$_SESSION['mon_id'][0];
+                    if (isset($_SESSION['mon_id'][1])) $strin .= ", ".$_SESSION['mon_id'][1];
+                    if (isset($_SESSION['mon_id'][2])) $strin .= ", ".$_SESSION['mon_id'][2];
+                    if (isset($_SESSION['mon_id'][3])) $strin .= ", ".$_SESSION['mon_id'][3];
+                    if (isset($_SESSION['mon_id'][4])) $strin .= ", ".$_SESSION['mon_id'][4];
+                    if (isset($_SESSION['mon_id'][5])) $strin .= ", ".$_SESSION['mon_id'][5];
+                    $strin .= " )";
+                    ?>
 
-            <div class="w-50 mx-auto p-2 my-2" >
-                <select name="" id="" class="form-select">
-                    <option value="HP"> HP </option>
-                    <option value="HP"> HP </option>
-                    <option value="HP"> HP </option>
-                    <option value="HP"> HP </option>
-                    <option value="HP"> HP </option>
-                </select>
-            </div>
-
-            <div class="border rounded w-50 mx-auto p-2 mt-2 mb-5"style="box-shadow:3px 3px 3px #999999;">
-                <div class="row">
-                    <div class="col-md-3 d-flex" style="justify-content:center;align-items:center;">
-                        <h4 class="fw-bold text-primary">HP</h4> 
+                    <div class=" mx-auto p-2 my-2" >
+                        <select id="" class="form-select" onchange="window.location='?page=team&s='+this.selectedIndex+'#stat';">
+                            <option value="HP" <?php if (!isset($_GET['s']) or (isset($_GET['s']) and $_GET['s']==0)) echo "selected";?>> HP </option>
+                            <option value="Attack" <?php if (isset($_GET['s']) and $_GET['s']==1) echo "selected";?>> Attack </option>
+                            <option value="Defense" <?php if (isset($_GET['s']) and $_GET['s']==2) echo "selected";?>> Defense </option>
+                            <option value="Sp_Attack" <?php if (isset($_GET['s']) and $_GET['s']==3) echo "selected";?>> Sp Attack </option>
+                            <option value="Sp_Defense" <?php if (isset($_GET['s']) and $_GET['s']==4) echo "selected";?>> Sp_Defense </option>
+                            <option value="Speed" <?php if (isset($_GET['s']) and $_GET['s']==5) echo "selected";?>> Speed </option>
+                            <option value="All" <?php if (isset($_GET['s']) and $_GET['s']==6) echo "selected";?>> All </option>
+                        </select>
                     </div>
-                    <div class="col-md-9">
-                        <div class="row">
-                            <div class="col-2 d-flex" style="justify-content:center;align-items:center;"><img src="images_mon/pic_m/1.png" class="img-fluid w-50 me-2"></div>
-                            <div class="col-2 d-flex" style="align-items:center;">150</div>
-                            <div class="col-8 d-flex" style="align-items:center;"><div class="bar1" style="<?php showbarcolor(120);?>width:120px;">&nbsp;</div></div>
-                            <div class="col-2 d-flex" style="justify-content:center;align-items:center;"><img src="images_mon/pic_m/2.png" class="img-fluid w-50 me-2"></div>
-                            <div class="col-2 d-flex" style="align-items:center;">150</div>
-                            <div class="col-8 d-flex" style="align-items:center;"><div class="bar1" style="<?php showbarcolor(120);?>width:110px;">&nbsp;</div></div>
-                            <div class="col-2 d-flex" style="justify-content:center;align-items:center;"><img src="images_mon/pic_m/4.png" class="img-fluid w-50 me-2"></div>
-                            <div class="col-2 d-flex" style="align-items:center;">150</div>
-                            <div class="col-8 d-flex" style="align-items:center;"><div class="bar1" style="<?php showbarcolor(120);?>width:90px;">&nbsp;</div></div>
-                            <div class="col-2 d-flex" style="justify-content:center;align-items:center;"><img src="images_mon/pic_m/5.png" class="img-fluid w-50 me-2"></div>
-                            <div class="col-2 d-flex" style="align-items:center;">150</div>
-                            <div class="col-8 d-flex" style="align-items:center;"><div class="bar1" style="<?php showbarcolor(120);?>width:60px;">&nbsp;</div></div>
+
+                    <?php
+                    $statlist = ['HP', 'Attack', 'Defense', 'Sp_Attack', 'Sp_Defense', 'Speed'];
+                    $s = isset($_GET['s']) ? $_GET['s'] : 0;
+                    if ( $s != 6) {
+                        $arr_stat = [$statlist[$s]];
+                    } else {
+                        $arr_stat = $statlist;
+                    }
+                    for ( $i = 0; $i < count($arr_stat); $i++ )
+                    {
+                        $statget = $arr_stat[$i]; 
+                        $sqlstat = " Select * From mon_data Where mon_id in $strin Order by $statget Desc ";
+                        $rststat = mysqli_query($conn, $sqlstat);
+                        ?>
+                        <div class="border rounded mx-auto p-2 mt-2 mb-3"style="box-shadow:3px 3px 3px #999999;">
+                            <div class="row">
+                                <div class="col-md-3 d-flex" style="justify-content:center;align-items:center;">
+                                    <h5 class="fw-bold text-primary"> <?php echo $arr_stat[$i]; ?> </h5> 
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="row">
+                                        <?php
+                                        while ( $arrstat = mysqli_fetch_array($rststat)) {
+                                            $stat_mon_id =$arrstat['mon_id'];
+                                            $stat_name = $arrstat['name'];
+                                            $stat_img = $arrstat['img'];
+                                            $stat_value = $arrstat[strtolower($statget)];
+                                            ?>
+                                            <div class="col-2 d-flex" style="justify-content:center;align-items:center;"><img src="images_mon/pic_m/<?php echo $stat_img;?>" class="img-fluid w-50 me-2" title="<?php echo $stat_name;?>"></div>
+                                            <div class="col-2 d-flex" style="align-items:center;"><?php echo $stat_value;?></div>
+                                            <div class="col-8 d-flex" style="align-items:center;"><div class="bar1" style="<?php showbarcolor($stat_value);?>width:<?php echo $stat_value;?>px;">&nbsp;</div></div>
+                                            <?php
+                                        }
+                                        ?>               
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                        <?php
+                    }
+                    ?>
 
-        <?php } ?> -->
+                <?php } ?>
+
+            </div>
+            <div class="col-lg-3 col-md-1"></div>
+        </div>
         <!-- "Best Stats" end -->
+
 
 
         <!-- Team Stats -->
@@ -523,7 +614,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
 
         <div class="m-2 px-2 pt-1 pb-3">
             <div class="row">
-            <?php
+                <?php
                 for ( $i = 0; $i < 6; $i++ ) 
                 {
                     if (isset($_SESSION['mon_id'][$i]) and $_SESSION['mon_id'][$i] != 0) 
@@ -532,12 +623,55 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                         $sql = " Select * From mon_data Where mon_id = '$mon_id' ";     
                         $rst = mysqli_query($conn, $sql);
                         $arr = mysqli_fetch_array($rst);
-                        $hp = $arr['hp'];
+                        $type1      = $arr['type1'];
+                        $type2      = $arr['type2'];
+                        $hp         = $arr['hp'];
                         $attack     = $arr['attack'];
                         $defense    = $arr['defense'];
                         $sp_attack  = $arr['sp_attack'];
                         $sp_defense = $arr['sp_defense'];
                         $speed      = $arr['speed'];
+                        //ดึงธาตุ
+                        $arr_type_win = array();
+                        $arr_type_weak = array();
+                        $arr_type_immune = array();
+                        $sqlt = " Select * From type Where type_name='".strtolower($type1)."' or type_name='".strtolower($type2)."' ";     
+                        $rstt = mysqli_query($conn, $sqlt);
+                        while ($arrt = mysqli_fetch_array($rstt)) {
+                            if ($arrt['type_win']!="") {
+                                $typestr = explode(",",str_replace(" ", "", $arrt['type_win']));
+                                for ( $j = 0; $j < count($typestr); $j++ ) {
+                                    if (!in_array($typestr[$j], $arr_type_win)) {
+                                        array_push( $arr_type_win, $typestr[$j]);
+                                    } else {
+                                        $index = array_search($typestr[$j],$arr_type_win);
+                                        $arr_type_win[$index] = $typestr[$j]."x2";
+                                    }
+                                }
+                            }
+                            if ($arrt['type_weak']!="") {
+                                $typestr = explode(",",str_replace(" ", "", $arrt['type_weak']));
+                                for ( $j = 0; $j < count($typestr); $j++ ) {
+                                    if (!in_array($typestr[$j], $arr_type_weak)) {
+                                        array_push( $arr_type_weak, $typestr[$j]);
+                                    } else {
+                                        $index = array_search($typestr[$j],$arr_type_weak);
+                                        $arr_type_weak[$index] = $typestr[$j]."x2";
+                                    }
+                                }
+                            }
+                            if ($arrt['type_immune']!="") {
+                                $typestr = explode(",",str_replace(" ", "", $arrt['type_immune']));
+                                for ( $j = 0; $j < count($typestr); $j++ ) {
+                                    if (!in_array($typestr[$j], $arr_type_immune)) {
+                                        array_push( $arr_type_immune, $typestr[$j]);
+                                    } else {
+                                        $index = array_search($typestr[$j],$arr_type_immune);
+                                        $arr_type_immune[$index] = $typestr[$j]."x2";
+                                    }
+                                }
+                            }
+                        }
                         ?>
                         <div class="col-lg-6">
                             <div class="border rounded mt-3" style="box-shadow:3px 3px 3px #999999;">
@@ -545,6 +679,10 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                                     <div class="col-4">
                                         <img src="images_mon/pic_m/<?php echo $arr['img']; ?>" class="img-fluid m-2">
                                         <div class="text-center my-2 small fw-bold"><?php echo $arr['name']; ?></div>
+                                        <div class="text-center">
+                                            <?php if ( !empty($type1) ) echo "<img src='images/type_icon/$type1.png'>"; ?>
+                                            <?php if ( !empty($type2) ) echo "<img src='images/type_icon/$type2.png'>"; ?>
+                                        </div>
                                     </div>
                                     <div class="col-8">
                                         <h6 class="fw-bold mt-3">Base Stats:</h6>
@@ -564,12 +702,12 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                                                 <div class="block1"><?php echo $arr['defense']; ?></div>
                                                 <div class="bar1" style="<?php showbarcolor($defense);?>width:<?php echo $defense;?>px;">&nbsp;</div>
                                             </div>
-                                            <div class="col-md-3 col-3">Sp. Atk:</div>
+                                            <div class="col-md-3 col-3">Sp.Atk:</div>
                                             <div class="col-md-9 col-9 small">
                                                 <div class="block1"><?php echo $arr['sp_attack']; ?></div>
                                                 <div class="bar1" style="<?php showbarcolor($sp_attack);?>width:<?php echo $sp_attack;?>px;">&nbsp;</div>
                                             </div>
-                                            <div class="col-md-3 col-3">Sp. Def:</div>
+                                            <div class="col-md-3 col-3">Sp.Def:</div>
                                             <div class="col-md-9 col-9 small">
                                                 <div class="block1"><?php echo $arr['sp_defense']; ?></div>
                                                 <div class="bar1" style="<?php showbarcolor($sp_defense);?>width:<?php echo $sp_defense;?>px;">&nbsp;</div>
@@ -582,6 +720,45 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                                             <div class="col-md-3 col-3">Total:</div>
                                             <div class="col-md-9 col-9 small">
                                                 <div class="float-start"><?php echo $arr['base_total']; ?></div>
+                                            </div>
+                                        </div>
+                                        <h6 class="fw-bold mt-3">Base Type:</h6>
+                                        <div class="row">
+                                            <div class="col-5 small" style="height:120px;">
+                                                <div class="fw-bold">Win</div> 
+                                                <?php
+                                                    $arr_loop = $arr_type_win;
+                                                    for ($k = 0; $k < count($arr_loop); $k++) {
+                                                        if (!strpos($arr_loop[$k],"x2"))
+                                                            echo "<img src='images/type_icon/".strtolower($arr_loop[$k]).".png'>";
+                                                        else
+                                                            echo "<img src='images/type_icon/".strtolower(str_replace("x2","",$arr_loop[$k]))."2.png' title='x 2'>";
+                                                    }
+                                                ?>
+                                            </div>
+                                            <div class="col-4 small">
+                                                <div class="fw-bold">Weak</div> 
+                                                <?php
+                                                    $arr_loop = $arr_type_weak;
+                                                    for ($k = 0; $k < count($arr_loop); $k++) {
+                                                        if (!strpos($arr_loop[$k],"x2"))
+                                                            echo "<img src='images/type_icon/".strtolower($arr_loop[$k]).".png'>";
+                                                        else
+                                                            echo "<img src='images/type_icon/".strtolower(str_replace("x2","",$arr_loop[$k]))."2.png' title='x 2'>";
+                                                    }
+                                                ?>
+                                            </div>
+                                            <div class="col-3 small">
+                                                <div class="fw-bold">Immune</div> 
+                                                <?php
+                                                    $arr_loop = $arr_type_immune;
+                                                    for ($k = 0; $k < count($arr_loop); $k++) {
+                                                        if (!strpos($arr_loop[$k],"x2"))
+                                                            echo "<img src='images/type_icon/".strtolower($arr_loop[$k]).".png'>";
+                                                        else
+                                                            echo "<img src='images/type_icon/".strtolower(str_replace("x2","",$arr_loop[$k]))."2.png' title='x 2'>";
+                                                    }
+                                                ?>
                                             </div>
                                         </div>
                                     </div>
@@ -654,6 +831,21 @@ if ($num_mon != 0) {
 <script>
 $(document).ready(function(){
 
+    $("#txtsearch").on("keyup", function() {
+        var value = $(this).val().toLowerCase()
+        $(".mondiv").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            $("#seltype").val("");
+        })
+    })
+    $("#seltype").on("change", function() {
+        var value = $(this).val().toLowerCase()
+        $(".mondiv").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            $("#txtsearch").val("");
+        })
+    })
+
     $(".monster").click(function(){
         $("#showid").text($(this).data('id'))
         $.get( "ajax_getmon.php",{ 
@@ -703,5 +895,7 @@ $(document).on("click", "#btnAddMon", function () {
     var mid = $("#showid").text();
     window.location='index.php?page=team&mon_id='+mid;
 });
+
+    
 </script>
 

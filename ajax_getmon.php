@@ -35,12 +35,12 @@ $speed      = $arr['speed'];
 <h4 class="text-center fw-bold"><?php echo $arr['name']; ?></h4>
 <div>
     <div class="row">
-        <div class="col-xl-3 col-lg-4 col-md-12 border">
+        <div class="col-xl-3 col-lg-4 col-md-12">
             <div>
                 <img src="images_mon/pic_m/<?php echo $arr['img']; ?>" class="img-fluid">
             </div>
         </div>
-        <div class="col-xl-4 col-lg-8 col-md-12 border">
+        <div class="col-xl-4 col-lg-8 col-md-12">
             <div>
                 <h5 class="fw-bold mt-3">Data</h5>
                 <div class="row">
@@ -61,13 +61,37 @@ $speed      = $arr['speed'];
                     <div class="col-xl-5 col-md-4 col-3">Catch rate:</div>
                     <div class="col-xl-7 col-md-8 col-9"><?php echo $arr['capture_rate']; ?></div>
                     <div class="col-xl-5 col-md-4 col-3">Exp growth:</div>
-                    <div class="col-xl-7 col-md-8 col-9"><?php echo $arr['exp_growth']; ?></div>
+                    <div class="col-xl-7 col-md-8 col-9">
+                        <?php echo $arr['exp_growth']; ?>
+                        <span class="fw-bold small">
+                        <?php 
+                        if ($arr['exp_growth'] >= 1640000) {
+                            echo ": Fluctuating";
+                        }
+                        else if ($arr['exp_growth'] >= 1250000) {
+                            echo ": Slow";
+                        }
+                        else if ($arr['exp_growth'] >= 1059860) {
+                            echo ": Medium Slow";
+                        }
+                        else if ($arr['exp_growth'] >= 1000000) {
+                            echo ": Medium Fast";
+                        }
+                        else if ($arr['exp_growth'] >= 800000) {
+                            echo ": Fast";
+                        }
+                        else {
+                            echo ": Erratic";
+                        }
+                        ?>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="d-xl-none  col-lg-4 col-md-12 border">
+        <div class="d-xl-none  col-lg-4 col-md-12">
         </div>
-        <div class="col-xl-5 col-lg-8 col-md-12 border">
+        <div class="col-xl-5 col-lg-8 col-md-12">
             <div>
                 <h5 class="fw-bold mt-3">Base Stats:</h5>
                 <div class="row">

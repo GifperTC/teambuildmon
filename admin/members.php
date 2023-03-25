@@ -1,3 +1,12 @@
+<?php
+
+if (!isset($_SESSION['login_id']) or $_SESSION['login_role'] != "admin") {
+    header("refresh:1; url=login.php");
+    exit();
+ }
+
+?>
+
 <title> Members </title>
 
 <div class="row">
