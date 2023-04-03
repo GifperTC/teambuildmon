@@ -37,7 +37,7 @@ if (isset($_POST['login_submit'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = sha1(mysqli_real_escape_string($conn, $_POST['password'])); //เข้ารหัสด้วย sha1()
 
-    $sql = " Select * From member Where mem_email = '$email' And mem_password = '$password' ";
+    $sql = " Select * From member Where (mem_email = '$email') And (mem_password = '$password') ";
     $rst = mysqli_query($conn, $sql);
     $arr = mysqli_fetch_array($rst);
     if (isset($arr['mem_id'])) {   //กรณีรหัสถูกต้อง

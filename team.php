@@ -231,7 +231,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
         </div>
         <?php
         $sqlg = " Select * From game ";
-        if ($_SESSION['game_id'] != 0) $sqlg .= " Where game_short = '".$_SESSION['game_id']."'";
+        if ( isset($_SESSION['game_id']) And $_SESSION['game_id'] != 0) $sqlg .= " Where game_short = '".$_SESSION['game_id']."'";
         $sqlg .= " Order By game_id Asc";
         $rstg = mysqli_query($conn, $sqlg);
         while ($arrg = mysqli_fetch_array($rstg)) 
@@ -249,13 +249,13 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                         }
                     ?>
 
-                    <?php if ($_SESSION['game_id'] != 0) { ?>
+                    <?php if ( isset($_SESSION['game_id']) And $_SESSION['game_id'] != 0) { ?>
                         <img src="images/<?php echo $arrg['game_img']?>" class="img-fluid" title="<?php echo $arrg['game_name']?>">
                     <?php } else { ?>
                         <a href="?page=team&g=<?php echo $arrg['game_short']?>"><img src="images/<?php echo $arrg['game_img']?>" class="img-fluid" title="<?php echo $arrg['game_name']?>"></a>
                     <?php } ?>
                         
-                    <?php if ($_SESSION['game_id'] != 0 and $_SESSION['game_name']==$arrg['game_name']) echo "<div class='small pt-3 fw-bold'>".$_SESSION['game_name']."</div>";?>
+                    <?php if ( isset($_SESSION['game_id']) And $_SESSION['game_id'] != 0 and $_SESSION['game_name']==$arrg['game_name']) echo "<div class='small pt-3 fw-bold'>".$_SESSION['game_name']."</div>";?>
                     
                 </div>
             </div>
@@ -266,7 +266,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
     
     <p class="my-4">&nbsp;</p>
 
-    <?php if ( $_SESSION['game_id'] != 0 )   //ต้องเลือกเกมส์ก่อนจึงจะแสดง
+    <?php if (  isset($_SESSION['game_id']) And $_SESSION['game_id'] != 0 )   //ต้องเลือกเกมส์ก่อนจึงจะแสดง
     {
         ?>
 
@@ -276,6 +276,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                 <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">List</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -434,6 +435,8 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
 
         <h4 class="text-primary fw-bold ms-2"> Your Pokemon Team: </h4>
 
+        <div class="row d-sm-none"><div class="col-12"><a data-bs-toggle="modal" data-bs-target="#ModalList" class="showdata" data-id=""><img src="images/slot.png" class="slot rounded-circle" width="60" title="Add Monster"></a></div></div>
+
         <?php  //if ($num_mon == 0) { echo "<h3 class='text-center'>ยังไม่มีรายการ</h3>"; } ?>
 
         <div class="table-responsive">
@@ -514,7 +517,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
             </table>
         </div>
 
-        <div class="text-end mb-4">
+        <div class="text-end mb-5">
             <button class="btn btn-secondary btn-sm" id="btnReset"> Reset Team </button>
             <a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#ModalLoad">
             <i class="fa-solid fa-upload"></i> &nbsp; Load Team     
@@ -575,7 +578,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                         <div class="border rounded mx-auto p-2 mt-2 mb-3"style="box-shadow:3px 3px 3px #999999;">
                             <div class="row">
                                 <div class="col-md-3 d-flex" style="justify-content:center;align-items:center;">
-                                    <h5 class="fw-bold text-primary"> <?php echo $arr_stat[$i]; ?> </h5> 
+                                    <h5 class="fw-bold text-primary"><?php echo $arr_stat[$i]; ?></h5> 
                                 </div>
                                 <div class="col-md-9">
                                     <div class="row">
@@ -587,8 +590,8 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                                             $stat_value = $arrstat[strtolower($statget)];
                                             ?>
                                             <div class="col-2 d-flex" style="justify-content:center;align-items:center;"><img src="images_mon/pic_m/<?php echo $stat_img;?>" class="img-fluid w-50 me-2" title="<?php echo $stat_name;?>"></div>
-                                            <div class="col-2 d-flex" style="align-items:center;"><?php echo $stat_value;?></div>
-                                            <div class="col-8 d-flex" style="align-items:center;"><div class="bar1" style="<?php showbarcolor($stat_value);?>width:<?php echo $stat_value;?>px;">&nbsp;</div></div>
+                                            <div class="col-1 d-flex small" style="align-items:center;"><?php echo $stat_value;?></div>
+                                            <div class="col-9 d-flex" style="align-items:center;"><div class="bar1" style="<?php showbarcolor($stat_value);?>width:<?php echo round($stat_value/255*98);?>%;">&nbsp;</div></div>
                                             <?php
                                         }
                                         ?>               
@@ -612,7 +615,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
         <!-- Team Stats -->
         <h4 class="text-primary fw-bold ms-2 mt-4"> Team Stats: </h4>
 
-        <div class="m-2 px-2 pt-1 pb-3">
+        <div class="m-2 px-1 pt-1 pb-3">
             <div class="row">
                 <?php
                 for ( $i = 0; $i < 6; $i++ ) 
@@ -673,49 +676,61 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                             }
                         }
                         ?>
-                        <div class="col-lg-6">
-                            <div class="border rounded mt-3" style="box-shadow:3px 3px 3px #999999;">
+                        <div class="col-lg-6 p-1">
+                            <div class="border rounded mt-3 p-1" style="box-shadow:3px 3px 4px #999999;">
                                 <div class="row">
-                                    <div class="col-4">
-                                        <img src="images_mon/pic_m/<?php echo $arr['img']; ?>" class="img-fluid m-2">
+                                    <div class="col-sm-4">
+                                        <img src="images_mon/pic_m/<?php echo $arr['img']; ?>" class="img-fluid m-1">
                                         <div class="text-center my-2 small fw-bold"><?php echo $arr['name']; ?></div>
                                         <div class="text-center">
                                             <?php if ( !empty($type1) ) echo "<img src='images/type_icon/$type1.png'>"; ?>
                                             <?php if ( !empty($type2) ) echo "<img src='images/type_icon/$type2.png'>"; ?>
                                         </div>
                                     </div>
-                                    <div class="col-8">
+                                    <div class="col-sm-8">
                                         <h6 class="fw-bold mt-3">Base Stats:</h6>
                                         <div class="row">
                                             <div class="col-md-3 col-3">HP:</div>
                                             <div class="col-md-9 col-9 small">
-                                                <div class="block1"><?php echo $arr['hp']; ?></div>
-                                                <div class="bar1" style="<?php showbarcolor($hp);?>width:<?php echo $hp;?>px;">&nbsp;</div>
+                                                <div class="row">
+                                                    <div class="col-2"><div class="block1"><?php echo $arr['hp']; ?></div></div>
+                                                    <div class="col-10"><div class="bar1" style="<?php showbarcolor($hp);?>width:<?php echo round($hp/255*100);?>%;">&nbsp;</div></div>
+                                                </div>
                                             </div>
                                             <div class="col-md-3 col-3">Attack:</div>
                                             <div class="col-md-9 col-9 small">
-                                                <div class="block1"><?php echo $arr['attack']; ?></div>
-                                                <div class="bar1" style="<?php showbarcolor($attack);?>width:<?php echo $attack;?>px;">&nbsp;</div>
+                                                <div class="row">
+                                                    <div class="col-2"><div class="block1"><?php echo $arr['attack']; ?></div></div>
+                                                    <div class="col-10"><div class="bar1" style="<?php showbarcolor($attack);?>width:<?php echo round($attack/255*100);?>%;">&nbsp;</div></div>
+                                                </div>
                                             </div>
                                             <div class="col-md-3 col-3">Defense:</div>
                                             <div class="col-md-9 col-9 small">
-                                                <div class="block1"><?php echo $arr['defense']; ?></div>
-                                                <div class="bar1" style="<?php showbarcolor($defense);?>width:<?php echo $defense;?>px;">&nbsp;</div>
+                                                <div class="row">
+                                                    <div class="col-2"><div class="block1"><?php echo $arr['defense']; ?></div></div>
+                                                    <div class="col-10"><div class="bar1" style="<?php showbarcolor($defense);?>width:<?php echo round($defense/255*100);?>%;">&nbsp;</div></div>
+                                                </div>
                                             </div>
                                             <div class="col-md-3 col-3">Sp.Atk:</div>
                                             <div class="col-md-9 col-9 small">
-                                                <div class="block1"><?php echo $arr['sp_attack']; ?></div>
-                                                <div class="bar1" style="<?php showbarcolor($sp_attack);?>width:<?php echo $sp_attack;?>px;">&nbsp;</div>
+                                                <div class="row">
+                                                    <div class="col-2"><div class="block1"><?php echo $arr['sp_attack']; ?></div></div>
+                                                    <div class="col-10"><div class="bar1" style="<?php showbarcolor($sp_attack);?>width:<?php echo round($sp_attack/255*100);?>%;">&nbsp;</div></div>
+                                                </div>
                                             </div>
                                             <div class="col-md-3 col-3">Sp.Def:</div>
                                             <div class="col-md-9 col-9 small">
-                                                <div class="block1"><?php echo $arr['sp_defense']; ?></div>
-                                                <div class="bar1" style="<?php showbarcolor($sp_defense);?>width:<?php echo $sp_defense;?>px;">&nbsp;</div>
+                                                <div class="row">
+                                                    <div class="col-2"><div class="block1"><?php echo $arr['sp_defense']; ?></div></div>
+                                                    <div class="col-10"><div class="bar1" style="<?php showbarcolor($sp_defense);?>width:<?php echo round($sp_defense/255*100);?>%;">&nbsp;</div></div>
+                                                </div>
                                             </div>
                                             <div class="col-md-3 col-3">Speed:</div>
                                             <div class="col-md-9 col-9 small">
-                                                <div class="block1"><?php echo $arr['speed']; ?></div>
-                                                <div class="bar1" style="<?php showbarcolor($speed);?>width:<?php echo $speed;?>px;">&nbsp;</div>
+                                                <div class="row">
+                                                    <div class="col-2"><div class="block1"><?php echo $arr['speed']; ?></div></div>
+                                                    <div class="col-10"><div class="bar1" style="<?php showbarcolor($speed);?>width:<?php echo round($speed/255*100);?>%;">&nbsp;</div></div>
+                                                </div>
                                             </div>
                                             <div class="col-md-3 col-3">Total:</div>
                                             <div class="col-md-9 col-9 small">
@@ -749,14 +764,14 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                                                 ?>
                                             </div>
                                             <div class="col-3 small">
-                                                <div class="fw-bold">Immune</div> 
+                                                <div class="fw-bold">Immune</div>
                                                 <?php
                                                     $arr_loop = $arr_type_immune;
                                                     for ($k = 0; $k < count($arr_loop); $k++) {
                                                         if (!strpos($arr_loop[$k],"x2"))
-                                                            echo "<img src='images/type_icon/".strtolower($arr_loop[$k]).".png'>";
+                                                            echo "<div class='ps-1'><img src='images/type_icon/".strtolower($arr_loop[$k]).".png'></div>";
                                                         else
-                                                            echo "<img src='images/type_icon/".strtolower(str_replace("x2","",$arr_loop[$k]))."2.png' title='x 2'>";
+                                                            echo "<div class='ps-1'><img src='images/type_icon/".strtolower(str_replace("x2","",$arr_loop[$k]))."2.png' title='x 2'></div>";
                                                     }
                                                 ?>
                                             </div>
@@ -838,6 +853,7 @@ $(document).ready(function(){
             $("#seltype").val("");
         })
     })
+
     $("#seltype").on("change", function() {
         var value = $(this).val().toLowerCase()
         $(".mondiv").filter(function() {

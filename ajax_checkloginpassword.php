@@ -10,7 +10,7 @@ $rowchk = mysqli_num_rows($rstchk);
 if ( $rowchk == 0 ) {
     echo "Email";
 } else {
-    $rstchk = mysqli_query($conn, " Select mem_password From member Where mem_password='$password' ");  // Check Correct Password
+    $rstchk = mysqli_query($conn, " Select mem_password From member Where mem_email='$email' And mem_password='$password' ");  // Check Correct Password
     $rowchk = mysqli_num_rows($rstchk); 
     if ( $rowchk == 0 ) {
         echo "Password";

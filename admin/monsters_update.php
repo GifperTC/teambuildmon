@@ -24,7 +24,6 @@ if ( isset($_POST['submit']) and isset($_POST['mon_id'])) {
     $name = $_POST['name'];
     $jp_name = $_POST['jp_name'];
     $img = $_POST['old_img'];
-    $img2 = $_POST['old_img2'];
     $type1 = $_POST['type1'];
     $type2 = $_POST['type2'];
     $base_egg_steps = $_POST['base_egg_steps'];
@@ -36,7 +35,7 @@ if ( isset($_POST['submit']) and isset($_POST['mon_id'])) {
     $sp_attack = $_POST['sp_attack'];
     $sp_defense = $_POST['sp_defense'];
     $speed = $_POST['speed'];
-    $base_total = $_POST['base_total'];
+    $base_total = $hp + $attack + $defense + $sp_attack + $sp_defense + $speed;
     $LGPE = isset($_POST['LGPE']) ? $_POST['LGPE'] : "No";
     $SWSH = isset($_POST['SWSH']) ? $_POST['SWSH'] : "No";
     $BDSP = isset($_POST['BDSP']) ? $_POST['BDSP'] : "No";
@@ -126,7 +125,7 @@ if ( isset($_POST['submit']) and isset($_POST['mon_id'])) {
                 <h3 class="pt-2 pb-3"> <i class="fa fa-list text-danger"></i> Update Monster Data :: ID <?php echo $arr['mon_id'] ?></h3>
                 <div class="row">
                     <div class="col-lg-2 col-md-2">Dex No.</div>
-                    <div class="col-lg-2 col-md-4"><input type="number" value="<?php echo $arr['dex_no'] ?>" name="dex_no" id="dex_no" class="form-control mt-1 mb-2"></div>
+                    <div class="col-lg-2 col-md-4"><input type="number" min="1" value="<?php echo $arr['dex_no'] ?>" name="dex_no" id="dex_no" class="form-control mt-1 mb-2"></div>
                     <div class="col-lg-2 col-md-2">Image small</div>
                     <div class="col-lg-2 col-md-4">
                         <input type="file" name="img" id="img" class="form-control mt-1 mb-2">
@@ -171,9 +170,9 @@ if ( isset($_POST['submit']) and isset($_POST['mon_id'])) {
                         </select>
                     </div>
                     <div class="col-lg-2 col-md-2">Base egg steps</div>
-                    <div class="col-lg-2 col-md-4"><input type="number" min="1" value="<?php echo $arr['base_egg_steps'] ?>"name="base_egg_steps" id="base_egg_steps" class="form-control mt-1 mb-2"></div>
+                    <div class="col-lg-2 col-md-4"><input type="number" min="1"  value="<?php echo $arr['base_egg_steps'] ?>"name="base_egg_steps" id="base_egg_steps" class="form-control mt-1 mb-2"></div>
                     <div class="col-lg-2 col-md-2">Capture rate</div>
-                    <div class="col-lg-2 col-md-4"><input type="number" min="1" max="250" value="<?php echo $arr['capture_rate'] ?>"name="capture_rate" id="capture_rate" class="form-control mt-1 mb-2"></div>
+                    <div class="col-lg-2 col-md-4"><input type="number" min="1" value="<?php echo $arr['capture_rate'] ?>"name="capture_rate" id="capture_rate" class="form-control mt-1 mb-2"></div>
                     <div class="col-lg-2 col-md-2">Exp growth</div>
                     <div class="col-lg-2 col-md-4"><input type="number" min="1" value="<?php echo $arr['exp_growth'] ?>"name="exp_growth" id="exp_growth" class="form-control mt-1 mb-2"></div>
                     <div class="col-lg-2 col-md-2">HP</div>
@@ -188,8 +187,6 @@ if ( isset($_POST['submit']) and isset($_POST['mon_id'])) {
                     <div class="col-lg-2 col-md-4"><input type="number" min="1" value="<?php echo $arr['sp_defense'] ?>"name="sp_defense" id="sp_defense" class="form-control mt-1 mb-2"></div>
                     <div class="col-lg-2 col-md-2">Speed</div>
                     <div class="col-lg-2 col-md-4"><input type="number" min="1" value="<?php echo $arr['speed'] ?>"name="speed" id="speed" class="form-control mt-1 mb-2"></div>
-                    <div class="col-lg-2 col-md-2">Total</div>
-                    <div class="col-lg-2 col-md-4"><input type="number" min="1" value="<?php echo $arr['base_total'] ?>"name="base_total" id="base_total" class="form-control mt-1 mb-2"></div>
                     <div class="col-lg-2 col-md-2">LGPE</div>
                     <div class="col-lg-2 col-md-4 mt-2 mb-2">
                         <input type="radio" name="LGPE" id="LGPE1" value="Y" class="form-check-input" <?php if ($arr['LGPE']=="Y") echo "checked"; ?>> Yes &nbsp;
@@ -221,7 +218,6 @@ if ( isset($_POST['submit']) and isset($_POST['mon_id'])) {
                     <input type="button" class="btn btn-outline-dark" onclick="window.location='index.php';" value=" Cancel ">
                     <input type="hidden" name="mon_id" value="<?php echo $mon_id;?>">
                     <input type="hidden" name="old_img" value="<?php echo $arr['img'];?>">
-                    <input type="hidden" name="old_img2" value="<?php echo $arr['img'];?>">
                 </div>
             </div>
 

@@ -19,12 +19,12 @@ if ( !isset($_SESSION['login_id']) or $_SESSION['login_role'] != "admin" ) {
                 <div class="row">
                     <div class="col-lg-9">
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col-sm-3">
                                 <input type="hidden" name="page" value="monsters">
-                                <input type="text" class="form-control form-control-sm mb-3" name="keyword" id="keyword" value="<?php if( isset($_GET["keyword"]) ) echo $_GET["keyword"] ?>">
+                                <input type="text" class="form-control form-control-sm mb-2" name="keyword" id="keyword" value="<?php if( isset($_GET["keyword"]) ) echo $_GET["keyword"] ?>">
                             </div>
-                            <div class="col-3">
-                                <select class="form-select form-select-sm" name="type" id="type">
+                            <div class="col-sm-3">
+                                <select class="form-select form-select-sm mb-2" name="type" id="type">
                                     <option value="">--All Type--</option>
                                     <?php
                                     $rsttype = mysqli_query($conn, " Select * From type Order By type_name Asc ");
@@ -36,8 +36,8 @@ if ( !isset($_SESSION['login_id']) or $_SESSION['login_role'] != "admin" ) {
                                     ?>
                                 </select>
                             </div>
-                            <div class="col-4">
-                                <select class="form-select form-select-sm" name="game_id" id="game_id">
+                            <div class="col-sm-4">
+                                <select class="form-select form-select-sm mb-2" name="game_id" id="game_id">
                                     <option value="">--All Game--</option>
                                     <?php
                                     $rstgame = mysqli_query($conn, " Select * From game Order by game_id Asc");
@@ -49,13 +49,13 @@ if ( !isset($_SESSION['login_id']) or $_SESSION['login_role'] != "admin" ) {
                                     ?>
                                 </select>
                             </div>
-                            <div class="col-2">
+                            <div class="col-sm-2">
                                 <button type="submit" class="btn btn-success btn-sm" id=""> Search </button>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <a href="?page=monsters_insert" class="btn btn-primary btn-sm float-end"> เพิ่ม Monster </a>
+                        <a href="?page=monsters_insert" class="btn btn-primary btn-sm float-end mb-2"> เพิ่ม Monster </a>
                     </div>
                 </div>
             </form>

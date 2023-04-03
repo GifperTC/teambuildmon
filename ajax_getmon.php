@@ -64,66 +64,78 @@ $speed      = $arr['speed'];
                     <div class="col-xl-7 col-md-8 col-9">
                         <?php echo $arr['exp_growth']; ?>
                         <span class="fw-bold small">
-                        <?php 
-                        if ($arr['exp_growth'] >= 1640000) {
-                            echo ": Fluctuating";
-                        }
-                        else if ($arr['exp_growth'] >= 1250000) {
-                            echo ": Slow";
-                        }
-                        else if ($arr['exp_growth'] >= 1059860) {
-                            echo ": Medium Slow";
-                        }
-                        else if ($arr['exp_growth'] >= 1000000) {
-                            echo ": Medium Fast";
-                        }
-                        else if ($arr['exp_growth'] >= 800000) {
-                            echo ": Fast";
-                        }
-                        else {
-                            echo ": Erratic";
-                        }
-                        ?>
+                            <?php
+                                if ($arr['exp_growth'] >= 1640000) {
+                                    echo ": Fluctuating";
+                                }
+                                else if ($arr['exp_growth'] >= 1250000) {
+                                    echo ": Slow";
+                                }
+                                else if ($arr['exp_growth'] >= 1059860) {
+                                    echo ": Medium Slow";
+                                }
+                                else if ($arr['exp_growth'] >= 1000000) {
+                                    echo ": Medium Fast";
+                                }
+                                else if ($arr['exp_growth'] >= 800000) {
+                                    echo ": Fast";
+                                }
+                                else {
+                                    echo ": Erratic";
+                                }
+                            ?>
                         </span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="d-xl-none  col-lg-4 col-md-12">
+        <div class="d-xl-none  col-lg-4 col-md-12 ">
         </div>
-        <div class="col-xl-5 col-lg-8 col-md-12">
+        <div class="col-xl-5 col-lg-8 col-md-12 ">
             <div>
                 <h5 class="fw-bold mt-3">Base Stats:</h5>
                 <div class="row">
                     <div class="col-md-4 col-3">HP:</div>
                     <div class="col-md-8 col-9">
-                        <div class="block1"><?php echo $hp; ?></div>
-                        <div class="bar1" style="<?php showbarcolor($hp); ?>width:<?php echo $hp; ?>px;">&nbsp;</div>
+                        <div class="row">
+                            <div class="col-2"><div class="block1"><?php echo $hp; ?></div></div>
+                            <div class="col-10"><div class="bar1" style="<?php showbarcolor($hp); ?>width:<?php echo round($hp/255*100); ?>%;">&nbsp;</div></div>
+                        </div>
                     </div>
                     <div class="col-md-4 col-3">Attack:</div>
                     <div class="col-md-8 col-9">
-                        <div class="block1"><?php echo $attack; ?></div>
-                        <div class="bar1" style="<?php showbarcolor($attack); ?>width:<?php echo $attack; ?>px;">&nbsp;</div>
+                        <div class="row">
+                            <div class="col-2"><div class="block1"><?php echo $attack; ?></div></div>
+                            <div class="col-10"><div class="bar1" style="<?php showbarcolor($attack); ?>width:<?php echo round($attack/255*100); ?>%;">&nbsp;</div></div>
+                        </div>
                     </div>
                     <div class="col-md-4 col-3">Defense:</div>
                     <div class="col-md-8 col-9">
-                        <div class="block1"><?php echo $defense; ?></div>
-                        <div class="bar1" style="<?php showbarcolor($defense); ?>width:<?php echo $defense; ?>px;">&nbsp;</div>
+                        <div class="row">
+                            <div class="col-2"><div class="block1"><?php echo $defense; ?></div></div>
+                            <div class="col-10"><div class="bar1" style="<?php showbarcolor($defense); ?>width:<?php echo round($defense/255*100); ?>%;">&nbsp;</div></div>
+                        </div>
                     </div>
                     <div class="col-md-4 col-3">Sp. Atk:</div>
                     <div class="col-md-8 col-9">
-                        <div class="block1"><?php echo $sp_attack; ?></div>
-                        <div class="bar1" style="<?php showbarcolor($sp_attack); ?>width:<?php echo $sp_attack; ?>px;">&nbsp;</div>
+                        <div class="row">
+                            <div class="col-2"><div class="block1"><?php echo $sp_attack; ?></div></div>
+                            <div class="col-10"><div class="bar1" style="<?php showbarcolor($sp_attack); ?>width:<?php echo round($sp_attack/255*100); ?>%;">&nbsp;</div></div>
+                        </div>
                     </div>
                     <div class="col-md-4 col-3">Sp. Def:</div>
                     <div class="col-md-8 col-9">
-                        <div class="block1"><?php echo $sp_defense; ?></div>
-                        <div class="bar1" style="<?php showbarcolor($sp_defense); ?>width:<?php echo $sp_defense; ?>px;">&nbsp;</div>
+                        <div class="row">
+                            <div class="col-2"><div class="block1"><?php echo $sp_defense; ?></div></div>
+                            <div class="col-10"><div class="bar1" style="<?php showbarcolor($sp_defense); ?>width:<?php echo round($sp_defense/255*100); ?>%;">&nbsp;</div></div>
+                        </div>
                     </div>
                     <div class="col-md-4 col-3">Speed:</div>
                     <div class="col-md-8 col-9">
-                        <div class="block1"><?php echo $speed; ?></div>
-                        <div class="bar1" style="<?php showbarcolor($speed); ?>width:<?php echo $speed; ?>px;">&nbsp;</div>
+                        <div class="row">
+                            <div class="col-2"><div class="block1"><?php echo $speed; ?></div></div>
+                            <div class="col-10"><div class="bar1" style="<?php showbarcolor($speed); ?>width:<?php echo round($speed/255*100); ?>%;">&nbsp;</div></div>
+                        </div>
                     </div>
                     <div class="col-md-4 col-3">Total:</div>
                     <div class="col-md-8 col-9">

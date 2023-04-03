@@ -5,7 +5,7 @@ if ( !isset($_SESSION['login_id']) or $_SESSION['login_role'] != "admin" ) {
 }
 
 //บันทึกข้อมูล
-if ( isset($_POST['submit']) and isset($_POST['name'])) {
+if ( isset($_POST['submit']) and isset($_POST['name'])) { exit();
 
     $dex_no = $_POST['dex_no'];
     $name = $_POST['name'];
@@ -23,7 +23,7 @@ if ( isset($_POST['submit']) and isset($_POST['name'])) {
     $sp_attack = $_POST['sp_attack'];
     $sp_defense = $_POST['sp_defense'];
     $speed = $_POST['speed'];
-    $base_total = $_POST['base_total'];
+    $base_total = $hp + $attack + $defense + $sp_attack + $sp_defense + $speed;
     $LGPE = isset($_POST['LGPE']) ? $_POST['LGPE'] : "No";
     $SWSH = isset($_POST['SWSH']) ? $_POST['SWSH'] : "No";
     $BDSP = isset($_POST['BDSP']) ? $_POST['BDSP'] : "No";
@@ -101,7 +101,7 @@ if ( isset($_POST['submit']) and isset($_POST['name'])) {
                 <h3 class="pt-2 pb-3"> <i class="fa fa-list text-danger"></i> Insert New Monster</h3>
                 <div class="row">
                     <div class="col-lg-2 col-md-2">Dex No.</div>
-                    <div class="col-lg-2 col-md-4"><input type="number" name="dex_no" id="dex_no" class="form-control mt-1 mb-2"></div>
+                    <div class="col-lg-2 col-md-4"><input type="number" min="1" name="dex_no" id="dex_no" class="form-control mt-1 mb-2"></div>
                     <div class="col-lg-2 col-md-2">Image small</div>
                     <div class="col-lg-2 col-md-4"><input type="file" name="img" id="img" class="form-control mt-1 mb-2"></div>
                     <div class="col-lg-2 col-md-2">Image big</div>
@@ -113,11 +113,11 @@ if ( isset($_POST['submit']) and isset($_POST['name'])) {
                     <div class="col-lg-2 col-md-2">Primary type</div>
                     <div class="col-lg-2 col-md-4">
                         <select name="type1" id="type1" class="form-select mt-1 mb-2">
-                            <option value="">--- Please Select </option>
-                            <?php 
-                                $sqlt1 = "Select * From type Order by type_name";
+                            <option value="">-- Please Select </option>
+                            <?php
+                                $sqlt1 = " Select * From type Order by type_name ";
                                 $rstt1 = mysqli_query($conn, $sqlt1);
-                                while ( $arrt1 = mysqli_fetch_array($rstt1)) {
+                                while ( $arrt1 = mysqli_fetch_array($rstt1) ) {
                                     echo "<option value='".strtolower($arrt1['type_name'])."'>".$arrt1['type_name']."</option>";
                                 }
                             ?>
@@ -125,14 +125,14 @@ if ( isset($_POST['submit']) and isset($_POST['name'])) {
                     </div>
                     <div class="col-lg-2 col-md-2">Secondary type</div>
                     <div class="col-lg-2 col-md-4">
-                    <select name="type2" id="type2" class="form-select mt-1 mb-2">
-                            <option value="0">--- Please Select </option>
-                            <option value="">None</option>
-                            <?php 
-                                $sqlt2 = "Select * From type Order by type_name";
-                                $rstt2 = mysqli_query($conn, $sqlt2);
-                                while ( $arrt2 = mysqli_fetch_array($rstt2)) {
-                                    echo "<option value='".strtolower($arrt2['type_name'])."'>".$arrt2['type_name']."</option>";
+                        <select name="type2" id="type2" class="form-select mt-1 mb-2">
+                            <option value="0">-- Please Select </option>
+                            <option value=""> None </option>
+                            <?php
+                                $sqlt1 = " Select * From type Order by type_name ";
+                                $rstt1 = mysqli_query($conn, $sqlt1);
+                                while ( $arrt1 = mysqli_fetch_array($rstt1) ) {
+                                    echo "<option value='".strtolower($arrt1['type_name'])."'>".$arrt1['type_name']."</option>";
                                 }
                             ?>
                         </select>
@@ -140,7 +140,7 @@ if ( isset($_POST['submit']) and isset($_POST['name'])) {
                     <div class="col-lg-2 col-md-2">Base egg steps</div>
                     <div class="col-lg-2 col-md-4"><input type="number" min="1" name="base_egg_steps" id="base_egg_steps" class="form-control mt-1 mb-2"></div>
                     <div class="col-lg-2 col-md-2">Capture rate</div>
-                    <div class="col-lg-2 col-md-4"><input type="number" min="1" max="250" name="capture_rate" id="capture_rate" class="form-control mt-1 mb-2"></div>
+                    <div class="col-lg-2 col-md-4"><input type="number" min="1" name="capture_rate" id="capture_rate" class="form-control mt-1 mb-2"></div>
                     <div class="col-lg-2 col-md-2">Exp growth</div>
                     <div class="col-lg-2 col-md-4"><input type="number" min="1" name="exp_growth" id="exp_growth" class="form-control mt-1 mb-2"></div>
                     <div class="col-lg-2 col-md-2">HP</div>
@@ -155,37 +155,35 @@ if ( isset($_POST['submit']) and isset($_POST['name'])) {
                     <div class="col-lg-2 col-md-4"><input type="number" min="1" name="sp_defense" id="sp_defense" class="form-control mt-1 mb-2"></div>
                     <div class="col-lg-2 col-md-2">Speed</div>
                     <div class="col-lg-2 col-md-4"><input type="number" min="1" name="speed" id="speed" class="form-control mt-1 mb-2"></div>
-                    <div class="col-lg-2 col-md-2">Total</div>
-                    <div class="col-lg-2 col-md-4"><input type="number" min="1" name="base_total" id="base_total" class="form-control mt-1 mb-2"></div>
                     <div class="col-lg-2 col-md-2">LGPE</div>
-                    <div class="col-lg-2 col-md-4 mt-1 mb-2">
-                        <input type="radio" name="LGPE" id="LGPE1" value="Y" class="form-check-input mt-1 mb-2"> Yes &nbsp;
-                        <input type="radio" name="LGPE" id="LGPE2" value="N" class="form-check-input mt-1 mb-2"> No
+                    <div class="col-lg-2 col-md-4 mt-2 mb-2">
+                        <input type="radio" name="LGPE" id="LGPE1" value="Y" class="form-check-input"> Yes &nbsp;
+                        <input type="radio" name="LGPE" id="LGPE2" value="N" class="form-check-input"> No
                     </div>
                     <div class="col-lg-2 col-md-2">SWSH</div>
-                    <div class="col-lg-2 col-md-4 mt-1 mb-2">
-                        <input type="radio" name="SWSH" id="SWSH1" value="Y" class="form-check-input mt-1 mb-2"> Yes &nbsp;
-                        <input type="radio" name="SWSH" id="SWSH2" value="N" class="form-check-input mt-1 mb-2"> No
+                    <div class="col-lg-2 col-md-4 mt-2 mb-2">
+                        <input type="radio" name="SWSH" id="SWSH1" value="Y" class="form-check-input"> Yes &nbsp;
+                        <input type="radio" name="SWSH" id="SWSH2" value="N" class="form-check-input"> No
                     </div>
                     <div class="col-lg-2 col-md-2">BDSP</div>
-                    <div class="col-lg-2 col-md-4 mt-1 mb-2">
-                        <input type="radio" name="BDSP" id="BDSP1" value="Y" class="form-check-input mt-1 mb-2"> Yes &nbsp;
-                        <input type="radio" name="BDSP" id="BDSP2" value="N" class="form-check-input mt-1 mb-2"> No
+                    <div class="col-lg-2 col-md-4 mt-2 mb-2">
+                        <input type="radio" name="BDSP" id="BDSP1" value="Y" class="form-check-input"> Yes &nbsp;
+                        <input type="radio" name="BDSP" id="BDSP2" value="N" class="form-check-input"> No
                     </div>
                     <div class="col-lg-2 col-md-2">PLA</div>
-                    <div class="col-lg-2 col-md-4 mt-1 mb-2">
-                        <input type="radio" name="PLA" id="PLA1" value="Y" class="form-check-input mt-1 mb-2"> Yes &nbsp;
-                        <input type="radio" name="PLA" id="PLA2" value="N" class="form-check-input mt-1 mb-2"> No
+                    <div class="col-lg-2 col-md-4 mt-2 mb-2">
+                        <input type="radio" name="PLA" id="PLA1" value="Y" class="form-check-input"> Yes &nbsp;
+                        <input type="radio" name="PLA" id="PLA2" value="N" class="form-check-input"> No
                     </div>
                     <div class="col-lg-2 col-md-2">SV</div>
-                    <div class="col-lg-2 col-md-4 mt-1 mb-2">
-                        <input type="radio" name="SV" id="SV1" value="Y" class="form-check-input mt-1 mb-2"> Yes &nbsp;
-                        <input type="radio" name="SV" id="SV2" value="N" class="form-check-input mt-1 mb-2"> No
+                    <div class="col-lg-2 col-md-4 mt-2 mb-2">
+                        <input type="radio" name="SV" id="SV1" value="Y" class="form-check-input"> Yes &nbsp;
+                        <input type="radio" name="SV" id="SV2" value="N" class="form-check-input"> No
                     </div>
                 </div>
                 <div class="my-4">
                     <button name="submit" class="btn btn-primary"> <i class="fa-solid fa-floppy-disk"></i> &nbsp; Save Monster </button>
-                    <a href="index.php" class="btn btn-outline-dark">Cancel</a>
+                    <input type="button" class="btn btn-outline-dark" onclick="window.location='index.php';" value=" Cancel ">
                 </div>
             </div>
 
@@ -244,8 +242,10 @@ $(document).ready(function(){
             $("#SV1").focus()
             return false
         }
+
         if ( !confirm('Save Data Now ?')) 
             return false;  //ยืนยันก่อนบันทึกข้อมูล
+
     })
 
 })
