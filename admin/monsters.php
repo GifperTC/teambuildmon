@@ -3,9 +3,13 @@ if ( !isset($_SESSION['login_id']) or $_SESSION['login_role'] != "admin" ) {
     header("refresh:1; url=login.php");
     exit();
 }
+
+include("../inc_connect.php");
+$sql=mysqli_query($conn,"SELECT COUNT(userid) FROM 'user'");
+
 ?>
 
-<title> Monsters </title>
+<title> Pokemon list </title>
 
 <div class="row">
     <div class="col-12">
@@ -55,7 +59,7 @@ if ( !isset($_SESSION['login_id']) or $_SESSION['login_role'] != "admin" ) {
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <a href="?page=monsters_insert" class="btn btn-primary btn-sm float-end mb-2"> เพิ่ม Monster </a>
+                        <a href="?page=monsters_insert" class="btn btn-primary btn-sm float-end mb-2"> Add Pokemon </a>
                     </div>
                 </div>
             </form>
@@ -118,7 +122,7 @@ if ( !isset($_SESSION['login_id']) or $_SESSION['login_role'] != "admin" ) {
                         $sql .= " And $game_id = 'Y' ";
                     }
 
-                    $sql .= " Order By Name Asc";
+                    $sql .= " Order By mon_id Asc";
 
                     $rst = mysqli_query($conn, $sql);
                     while ($arr = mysqli_fetch_array($rst)) {
@@ -153,6 +157,8 @@ if ( !isset($_SESSION['login_id']) or $_SESSION['login_role'] != "admin" ) {
                     }
                     ?>
                 </table>
+
+                <div id="pagination_controls"><?php echo $paginationCtrls; ?></div>
 
             </div>
             <!--End Table -->

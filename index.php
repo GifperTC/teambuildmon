@@ -3,9 +3,11 @@ session_start();
 include("inc_connect.php");
 
 //Sign up
-if ( isset($_POST['signup_submit']) && isset($_POST['signup_email'], $_POST['signup_username'], $_POST['signup_password'], $_POST['signup_cpassword'])
-    && strlen($_POST['signup_email']) && strlen($_POST['signup_username']) && strlen($_POST['signup_password']) && strlen($_POST['signup_cpassword']) ) {
-    
+if (
+    isset($_POST['signup_submit']) && isset($_POST['signup_email'], $_POST['signup_username'], $_POST['signup_password'], $_POST['signup_cpassword'])
+    && strlen($_POST['signup_email']) && strlen($_POST['signup_username']) && strlen($_POST['signup_password']) && strlen($_POST['signup_cpassword'])
+) {
+
     $signup_email = mysqli_real_escape_string($conn, $_POST['signup_email']);
     $signup_username = mysqli_real_escape_string($conn, $_POST['signup_username']);
     $signup_password = mysqli_real_escape_string($conn, $_POST['signup_password']);
@@ -55,6 +57,7 @@ if (isset($_POST['login_submit'])) {
 ?>
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -65,6 +68,7 @@ if (isset($_POST['login_submit'])) {
     <script src="js/jquery-3.6.3.min.js"></script>
     <script src="js/bootstrap.bundle.js"></script>
 </head>
+
 <body>
 
     <!-- Modal :: Login -->
@@ -88,7 +92,6 @@ if (isset($_POST['login_submit'])) {
                         <button type="submit" name="login_submit" class="btn btn-primary btn-sm w-100 mt-3 mb-1">Login</button>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-warning btn-sm me-auto" data-bs-toggle="modal" data-bs-target="#ModalSignup"> Signup </button>
                         <a href="#" data-bs-toggle="modal" data-bs-target="#ModalForget">[Forget Password]</a>
                     </div>
                 </div>
@@ -106,8 +109,8 @@ if (isset($_POST['login_submit'])) {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        
-                        <div >Email</div>
+
+                        <div>Email</div>
                         <input type="email" name="signup_email" id="signup_email" placeholder="Email" class="form-control form-control-sm mt-1">
                         <div class="small text-danger ms-2" id="err_signup_email" style="display:none;">*Please input your email</div>
                         <div class="small text-danger ms-2" id="err_email_duplicate" style="display:none;">Sorry! Duplicate Email.</div>
@@ -118,7 +121,7 @@ if (isset($_POST['login_submit'])) {
                         <div class="small text-danger ms-2" id="err_username_duplicate" style="display:none;">Sorry! Duplicate Username.</div>
 
                         <div class="mt-3">Password</div>
-                        <input type="password" name="signup_password" id="signup_password" placeholder="Password" class="form-control form-control-sm mt-1">
+                        <input type="password" name="signup_password" id="signup_password" placeholder="Password has to be at least 8 characters" class="form-control form-control-sm mt-1">
                         <div class="small text-danger ms-2" id="err_signup_password" style="display:none;">*Please input your password</div>
                         <div class="small text-danger ms-2" id="err_signup_password2" style="display:none;">*Password must not be less than 8 characters.</div>
 
@@ -126,11 +129,7 @@ if (isset($_POST['login_submit'])) {
                         <input type="password" name="signup_cpassword" id="signup_cpassword" placeholder="Confirm Password" class="form-control form-control-sm mt-1">
                         <div class="small text-danger ms-2" id="err_signup_cpassword" style="display:none;">*Please confirm your password</div>
                         <div class="small text-danger ms-2" id="err_signup_cpassword2" style="display:none;">*Incorrect password confirmation</div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target='#ModalLogin'>Back to Login</button>
-                        <button type="submit" name="signup_submit" class="btn btn-warning btn-sm">Sign up</button>
+                        <button type="submit" name="signup_submit" class="btn btn-primary btn-sm w-100 mt-3 mb-1">Sign up</button>
                     </div>
                 </div>
             </div>
@@ -163,21 +162,21 @@ if (isset($_POST['login_submit'])) {
 
     <!-- Modal :: Reset Password Email Sent -->
     <div class="modal fade" id="ModalForgetEmailSent" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h2 class="modal-title fs-5" id="exampleModalLabel">Forget Password</h2>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <h5 class="mt-3 mb-4 text-success">Email Successfully Sent.</h5>
-                        <h6 class="mt-3 mb-3">*Please check your mailbox and click the link in your email to reset your password. </h6>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title fs-5" id="exampleModalLabel">Forget Password</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="mt-3 mb-4 text-success">Email Successfully Sent.</h5>
+                    <h6 class="mt-3 mb-3">*Please check your mailbox and click the link in your email to reset your password. </h6>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
+        </div>
     </div>
 
     <header>
@@ -214,7 +213,7 @@ if (isset($_POST['login_submit'])) {
     <!-- White content box-->
     <section>
         <div class="container-md">
-            <div class="bg-white border rounded mt-3 mb-3 p-2" style="min-height: 450px;">  <!--  style="min-height: 600px; overflow-y: auto; overflow-x: hidden;" -->
+            <div class="bg-white border rounded mt-3 mb-3 p-2" style="min-height: 450px;"> <!--  style="min-height: 600px; overflow-y: auto; overflow-x: hidden;" -->
                 <?php
                 $page = "home.php";
                 if (isset($_GET['page']))
@@ -230,14 +229,14 @@ if (isset($_POST['login_submit'])) {
     </footer>
 
 </body>
+
 </html>
 <script>
-
     $("#showsending").hide(500)
 
     function CheckLogin() {
-        
-        if (document.getElementById('email').value.trim() == "") {       // check email empty
+
+        if (document.getElementById('email').value.trim() == "") { // check email empty
             document.getElementById('err_login_email').style.display = "block"
             document.getElementById('err_email_incorrect').style.display = "none"
             document.getElementById('email').focus()
@@ -247,7 +246,7 @@ if (isset($_POST['login_submit'])) {
             document.getElementById('err_email_incorrect').style.display = "none"
         }
 
-        if (document.getElementById('password').value.trim() == "") {       // check password empty
+        if (document.getElementById('password').value.trim() == "") { // check password empty
             document.getElementById('err_login_password').style.display = "block"
             document.getElementById('err_password_incorrect').style.display = "none"
             document.getElementById('password').focus()
@@ -257,12 +256,12 @@ if (isset($_POST['login_submit'])) {
             document.getElementById('err_password_incorrect').style.display = "none"
         }
 
-        var incorrect = $.CheckLoginPassword();  //Call Ajax 
-        if ( incorrect == "Email") {
+        var incorrect = $.CheckLoginPassword(); //Call Ajax 
+        if (incorrect == "Email") {
             document.getElementById('err_email_incorrect').style.display = "block"
             document.getElementById('err_password_incorrect').style.display = "none"
             return false
-        } else if ( incorrect == "Password") {
+        } else if (incorrect == "Password") {
             document.getElementById('err_email_incorrect').style.display = "none"
             document.getElementById('err_password_incorrect').style.display = "block"
             return false
@@ -274,8 +273,8 @@ if (isset($_POST['login_submit'])) {
     }
 
     function CheckSignup() {
-        
-        if (document.getElementById('signup_email').value.trim() == "") {    // check email empty
+
+        if (document.getElementById('signup_email').value.trim() == "") { // check email empty
             document.getElementById('err_signup_email').style.display = "block"
             document.getElementById('signup_email').focus()
             return false
@@ -292,12 +291,12 @@ if (isset($_POST['login_submit'])) {
             document.getElementById('err_signup_username').style.display = "none"
         }
 
-        var dup = $.CheckDuplicate();  //Call Ajax
-        if ( dup == "Email") {
+        var dup = $.CheckDuplicate(); //Call Ajax
+        if (dup == "Email") {
             document.getElementById('err_email_duplicate').style.display = "block"
             document.getElementById('err_username_duplicate').style.display = "none"
             return false
-        } else if ( dup == "Username") {
+        } else if (dup == "Username") {
             document.getElementById('err_email_duplicate').style.display = "none"
             document.getElementById('err_username_duplicate').style.display = "block"
             return false
@@ -319,7 +318,7 @@ if (isset($_POST['login_submit'])) {
             document.getElementById('err_signup_password').style.display = "none"
         }
         // check password at least 8 char
-        if (pass.value.length > 0 && pass.value.length < 8 ) {
+        if (pass.value.length > 0 && pass.value.length < 8) {
             document.getElementById('err_signup_password2').style.display = "block"
             pass.focus()
             return false
@@ -337,7 +336,7 @@ if (isset($_POST['login_submit'])) {
         }
 
         // check cpassword = password
-        if ( cpass.value.trim() != pass.value.trim() ) {
+        if (cpass.value.trim() != pass.value.trim()) {
             document.getElementById('err_signup_cpassword2').style.display = "block"
             cpass.focus()
             return false
@@ -348,7 +347,7 @@ if (isset($_POST['login_submit'])) {
     }
 
     function CheckForget() {
-        if (document.getElementById('emailforget').value.trim() == "") {       // check email empty
+        if (document.getElementById('emailforget').value.trim() == "") { // check email empty
             document.getElementById('err_please_input_email').style.display = "block"
             document.getElementById('err_email_forget').style.display = "none"
             document.getElementById('emailforget').focus()
@@ -357,22 +356,22 @@ if (isset($_POST['login_submit'])) {
             document.getElementById('err_please_input_email').style.display = "none"
             document.getElementById('err_email_forget').style.display = "none"
         }
-        
-        var dupforget = $.CheckDupForget();  //Call Ajax 
-        if ( dupforget == "No") {
+
+        var dupforget = $.CheckDupForget(); //Call Ajax 
+        if (dupforget == "No") {
             document.getElementById('err_email_forget').style.display = "block"
             document.getElementById('err_please_input_email').style.display = "none"
             return false
         } else {
             document.getElementById('err_email_forget').style.display = "none"
             document.getElementById('err_please_input_email').style.display = "none"
-            if ( !confirm('Reset Now ?')) {
+            if (!confirm('Reset Now ?')) {
                 return false
             } else {
                 $("#showform").hide(500);
                 $("#showsending").fadeIn(1000, function() {
-                    var sent = $.SendEmail();  
-                    if ( sent == "Sent") {
+                    var sent = $.SendEmail();
+                    if (sent == "Sent") {
                         $('#ModalForget').modal('hide')
                         $('#ModalForgetEmailSent').modal('show')
                     } else {
@@ -384,21 +383,24 @@ if (isset($_POST['login_submit'])) {
         }
     }
 
-    $("#forget_submit").click(function(){
+    $("#forget_submit").click(function() {
         CheckForget();
     })
-    
-    $.CheckLoginPassword = function () {
+
+    $.CheckLoginPassword = function() {
         var result = ""
         if ($("#email").val() != "" && $("#password").val() != "") {
             $.ajax('ajax_checkloginpassword.php', {
-                type: 'GET',  
+                type: 'GET',
                 async: false,
-                data: { email: $("#email").val().trim(), password: $("#password").val().trim()  },  
-                success: function (data, status, xhr) {
+                data: {
+                    email: $("#email").val().trim(),
+                    password: $("#password").val().trim()
+                },
+                success: function(data, status, xhr) {
                     result = data
                 },
-                error: function (jqXhr, textStatus, errorMessage) {
+                error: function(jqXhr, textStatus, errorMessage) {
                     $("body").html("Cannot call jquery file")
                 }
             })
@@ -406,54 +408,60 @@ if (isset($_POST['login_submit'])) {
         return result
     }
 
-    $.CheckDuplicate = function () {
+    $.CheckDuplicate = function() {
         var result = ""
         $.ajax('ajax_checkduplicate.php', {
-            type: 'GET',  
+            type: 'GET',
             async: false,
-            data: { email: $("#signup_email").val().trim(), username: $("#signup_username").val().trim()  },  
-            success: function (data, status, xhr) {
+            data: {
+                email: $("#signup_email").val().trim(),
+                username: $("#signup_username").val().trim()
+            },
+            success: function(data, status, xhr) {
                 result = data
             },
-            error: function (jqXhr, textStatus, errorMessage) {
+            error: function(jqXhr, textStatus, errorMessage) {
                 $("body").html("Cannot call jquery file")
             }
         })
         return result
     }
 
-    $.CheckDupForget = function () {
+    $.CheckDupForget = function() {
         var result = ""
         $.ajax('ajax_checkdupforget.php', {
-            type: 'GET',  
+            type: 'GET',
             async: false,
-            data: { email: $("#emailforget").val().trim()  },  
-            success: function (data, status, xhr) {
+            data: {
+                email: $("#emailforget").val().trim()
+            },
+            success: function(data, status, xhr) {
                 result = data
             },
-            error: function (jqXhr, textStatus, errorMessage) {
+            error: function(jqXhr, textStatus, errorMessage) {
                 $("body").html("Cannot call jquery file")
             }
         })
         return result
     }
 
-    $.SendEmail = function () {
+    $.SendEmail = function() {
         var result = ""
         $.ajax('ajax_forgetemailsend.php', {
-            type: 'GET',  
+            type: 'GET',
             async: false,
-            data: { email: $("#emailforget").val().trim()  },  
-            success: function (data, status, xhr) {
+            data: {
+                email: $("#emailforget").val().trim()
+            },
+            success: function(data, status, xhr) {
                 result = data
             },
-            error: function (jqXhr, textStatus, errorMessage) {
+            error: function(jqXhr, textStatus, errorMessage) {
                 $("body").html("Cannot call jquery file")
             }
         })
         return result
     }
-
 </script>
 
 <?php mysqli_close($conn); ?>

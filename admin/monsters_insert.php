@@ -5,7 +5,7 @@ if ( !isset($_SESSION['login_id']) or $_SESSION['login_role'] != "admin" ) {
 }
 
 //บันทึกข้อมูล
-if ( isset($_POST['submit']) and isset($_POST['name'])) { exit();
+if ( isset($_POST['submit']) and isset($_POST['dex_no'])) {
 
     $dex_no = $_POST['dex_no'];
     $name = $_POST['name'];

@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai&family=K2D&family=Noto+Sans+Thai&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 *{
     margin: 0;
     padding: 0;
@@ -25,7 +26,8 @@ nav{
 
 
 #headtopic{
-  font-size: 50px;
+  font-family: 'Press Start 2P';
+  font-size: 40px;
   font-weight: bold;
   color: #ffffff;
   /* backdrop-filter: blur(5px);
@@ -66,10 +68,7 @@ footer {
     box-shadow: 2px 2px 3px grey;
   }
 
-  .bar1 {
-    float: left;
+  .bar2 {
     height: 16px;
     border-radius: 5px;
-    margin-left: 5px;
-    box-shadow: 2px 2px 3px grey;
   }

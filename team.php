@@ -227,7 +227,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
     <div class="row">
         <div class="col-lg-2 col-md-4 col-sm-6">
             <h4 class="text-primary fw-bold ms-1"> Game: </h4>
-            <a href="?page=team&g=0" class="ms-4 small" title="Select game" onclick="if(!confirm('Change Game ? (Reset your monsters!)'))return false;">[change]</a>
+            <a href="?page=team&g=0" class="ms-4 small" title="Select game" onclick="if(!confirm('Change Game? (Your team will get reset!)'))return false;">[Change Game]</a>
         </div>
         <?php
         $sqlg = " Select * From game ";
@@ -283,7 +283,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                         <div class="col-xl-6 col-lg-10 col-12">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <input type="text" id="txtsearch" class="form-control form-control-sm form-inline" placeholder="Search Monster....">
+                                    <input type="text" id="txtsearch" class="form-control form-control-sm form-inline" placeholder="Search Pokemon....">
                                 </div>
                                 <div class="col-sm-5">
                                     <select class="form-select form-select-sm" name="seltype" id="seltype">
@@ -302,7 +302,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                         </div>
                         <div class="col-xl-6 col-lg-2 col-12"></div>
                         <?php
-                        $sql = " Select * From mon_data Where ".$_SESSION['game_id']." = 'Y' Order By name Asc ";
+                        $sql = " Select * From mon_data Where ".$_SESSION['game_id']." = 'Y' Order By mon_id Asc ";
                         $rst = mysqli_query($conn, $sql);
                         while ($arr = mysqli_fetch_array($rst))
                         {
@@ -610,10 +610,9 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
         </div>
         <!-- "Best Stats" end -->
 
-
-
         <!-- Team Stats -->
         <h4 class="text-primary fw-bold ms-2 mt-4"> Team Stats: </h4>
+        <p class="text-danger ms-4 small"> *Type icon with red dot = effectiveness is doubled </p>
 
         <div class="m-2 px-1 pt-1 pb-3">
             <div class="row">
@@ -740,7 +739,7 @@ $imglink6 = isset($_SESSION['img'][5]) ? '#ModalData" class="showdata" data-id="
                                         <h6 class="fw-bold mt-3">Base Type:</h6>
                                         <div class="row">
                                             <div class="col-5 small" style="height:120px;">
-                                                <div class="fw-bold">Win</div> 
+                                                <div class="fw-bold">Can resist</div> 
                                                 <?php
                                                     $arr_loop = $arr_type_win;
                                                     for ($k = 0; $k < count($arr_loop); $k++) {
@@ -841,7 +840,6 @@ if ($num_mon != 0) {
     </script>
 
 <?php } ?>
-
 
 <script>
 $(document).ready(function(){
